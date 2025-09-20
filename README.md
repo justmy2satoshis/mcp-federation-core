@@ -13,7 +13,7 @@ MCP Federation Core is a lightweight, unified database system that enables seaml
 ### Key Features:
 - 🔄 **Unified Database**: Single SQLite database shared across all MCPs
 - 🌐 **Cross-MCP Communication**: Query data from any MCP using `from_mcp` parameter
-- ⚡ **Lightweight**: Optimized for standard hardware (2GB RAM minimum)
+- ⚡ **Lightweight**: Optimized for standard hardware (4GB RAM minimum)
 - 🛠️ **Expert Role System**: 50 specialized AI expert roles with confidence scoring
 - 🧠 **Advanced Reasoning**: Chain-of-Thought (CoT) and Tree-of-Thoughts (ToT) frameworks
 - 🔌 **REST API**: External integration via port 3456
@@ -22,14 +22,14 @@ MCP Federation Core is a lightweight, unified database system that enables seaml
 ## 📊 System Requirements
 
 ### Minimum Requirements:
-- **RAM**: 2GB
+- **RAM**: 4GB
 - **Storage**: 500MB free space
 - **CPU**: Dual-core 2.0GHz
 - **OS**: Windows 10/11, macOS 10.15+, Linux (Ubuntu 20.04+)
-- **Runtime**: Node.js 18+, Python 3.10+
+- **Runtime**: Node.js 18+, Python 3.8+
 
 ### Recommended:
-- **RAM**: 4GB
+- **RAM**: 8GB
 - **Storage**: 1GB free space  
 - **CPU**: Quad-core 2.5GHz
 - **Network**: Stable internet for web-based MCPs
@@ -47,7 +47,7 @@ cd mcp-federation-core
 # Windows
 .\install-mcp-suite.ps1
 
-# macOS/Linux
+# macOS/Linux (coming soon)
 chmod +x install-mcp-suite.sh
 ./install-mcp-suite.sh
 ```
@@ -57,128 +57,122 @@ The installer automatically updates your Claude Desktop configuration. Restart C
 
 ## 📦 Included MCPs (15 Total)
 
-### Core MCPs (3):
+### Custom MCPs (3):
 1. **expert-role-prompt** (v2.0) - 50 expert roles with reasoning frameworks
-2. **kimi-k2-resilient-enhanced** - Resilient data storage with circuit breakers
+2. **kimi-k2-resilient-enhanced** - Resilient data storage with circuit breakers  
 3. **kimi-k2-code-context-enhanced** - Code analysis with vector search
 
 ### Standard MCPs (12):
-- sequential-thinking
-- memory
-- filesystem
-- web-search
-- sqlite
-# continuation of README.md
-- perplexity
-- desktop-commander
-- playwright
-- github-manager
-- git-ops
-- rag-context
-- converse
-- Context7
+4. **sequential-thinking** - Step-by-step problem solving with branching
+5. **memory** - Persistent knowledge graph storage
+6. **filesystem** - File system operations and management
+7. **web-search** - Brave search API integration
+8. **sqlite** - Direct SQLite database operations
+9. **perplexity** - AI-powered search and answers
+10. **desktop-commander** - System command execution
+11. **playwright** - Browser automation and web scraping
+12. **github-manager** - GitHub repository management
+13. **git-ops** - Git version control operations
+14. **rag-context** - RAG-based context management
+15. **converse** - Multi-model AI consensus
 
 ## 🔬 Performance Benchmarks
 
-Results from load testing on standard hardware:
+Results from load testing on standard hardware (32 cores, 61GB RAM):
 
 ### Response Times:
-- **Single MCP Query**: ~50ms average
-- **Cross-MCP Federation**: ~120ms average
-- **Complex CoT Reasoning**: ~300ms average
-- **REST API Response**: ~80ms average
+- **Database Write**: 5.67ms average
+- **Database Read**: 0.03ms average  
+- **Cross-MCP Query**: 0.03ms average
+- **MCP Startup**: ~500ms per MCP
 
 ### Resource Usage:
-- **Idle Memory**: 180MB
-- **Active Memory**: 350MB (peak: 500MB)
-- **CPU (idle)**: <1%
+- **Idle Memory**: 21MB
+- **Active Memory**: 200-400MB
+- **CPU (idle)**: 0.4%
 - **CPU (active)**: 15-25%
-- **Database Size**: 16KB (grows ~1MB per 10k operations)
+- **Database Size**: 16KB (grows with usage)
 
 ### Concurrent Operations:
 - **Max Parallel MCPs**: 15 (all running)
-- **Requests/Second**: 100 RPS sustained
-- **Database Connections**: 30 concurrent
-- **WebSocket Clients**: 50 simultaneous
+- **Requests/Second**: 50+ sustained
 
 ## 🏗️ Architecture
 
-```
-mcp-federation-core/
-├── mcp-unified.db          # Unified SQLite database
-├── mcp-servers/
-│   ├── expert-role-prompt/  # v2.0 with 50 roles
-│   │   ├── server.js
-│   │   ├── reasoning-frameworks.js
-│   │   ├── confidence-scoring.js
-│   │   └── rest-api-server.js
-│   ├── kimi-k2-resilient-enhanced/
-│   │   └── server.py       # Circuit breaker patterns
-│   └── kimi-k2-code-context-enhanced/
-│       └── server.py       # Vector search
-├── test_mcp_persistence.py  # Federation tests
-└── install-mcp-suite.ps1   # One-click installer
+### Unified Database Schema:
+```sql
+CREATE TABLE context (
+    id TEXT PRIMARY KEY,
+    mcp_source TEXT NOT NULL,
+    data TEXT NOT NULL,
+    metadata TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP,
+    ttl INTEGER
+);
 ```
 
-## 🔄 Cross-MCP Communication
-
-### Store data in one MCP:
+### Cross-MCP Communication:
 ```python
-# Store in resilient MCP
-resilient_mcp.store_resilient_data(
-    key="project_config",
-    value="{'mode': 'production'}",
-    ttl=3600
-)
-```
+# Store data from one MCP
+store_context(key="analysis_result", data=result, mcp_source="code-context")
 
-### Retrieve from another MCP:
-```python
-# Retrieve from code-context MCP
-code_mcp.retrieve_context(
-    key="project_config",
-    from_mcp="kimi-k2-resilient-enhanced"
-)
-```
+# Retrieve from another MCP
+data = retrieve_context(key="analysis_result", from_mcp="code-context")
 
-### Wildcard search across all MCPs:
-```python
-# Search all MCPs
-any_mcp.retrieve_context(
-    key="config",
-    from_mcp="*"  # Searches all 15 MCPs
-)
+# Query across all MCPs
+all_data = retrieve_context(key="*", from_mcp="*")
 ```
 
 ## 🧪 Testing
 
-Run the comprehensive test suite:
+Run the included test suite to verify your installation:
 
 ```bash
-# Test persistence across all MCPs
+# Test cross-MCP communication
 python test_mcp_persistence.py
 
-# Expected output:
-# ✅ 15/15 MCPs operational
-# ✅ Cross-MCP retrieval working
-# ✅ Wildcard search functional
-# ✅ TTL expiration verified
+# Check database connectivity
+python check_mcp_db.py
+
+# Run performance benchmark
+python benchmark_mcp_performance.py
 ```
 
-## 📈 Comparison: Core vs Suite
+## 🛠️ Configuration
 
-| Feature | MCP Federation Core | MCP Federation Suite (Pro) |
-|---------|-------------------|--------------------------|
-| MCPs Included | 15 | 30+ |
-| Memory Required | 2GB | 8GB |
-| Expert Roles | 50 | 100+ |
-| Reasoning Frameworks | CoT, ToT | CoT, ToT, ReAct, MCTS |
-| REST API | ✅ | ✅ |
-| WebSocket | ❌ | ✅ |
-| GraphQL | ❌ | ✅ |
-| Priority Support | ❌ | ✅ |
-| Custom Workflows | Basic | Advanced |
-| Price | Free (MIT) | Contact for pricing |
+### Claude Desktop Integration:
+The installer automatically configures Claude Desktop. Manual configuration can be done by editing:
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Linux: `~/.config/Claude/claude_desktop_config.json`
+
+### REST API Access:
+The expert-role-prompt MCP includes a REST API server:
+```bash
+# Start REST API server (port 3456)
+node mcp-servers/expert-role-prompt/rest-api-server.js
+
+# Example API call
+curl http://localhost:3456/api/nominate-expert \
+  -H "Content-Type: application/json" \
+  -d '{"task": "analyze Python code"}'
+```
+
+## 📚 Documentation
+
+### Expert Roles (50 Available):
+- Software Engineers (Frontend, Backend, Full-Stack)
+- AI/ML Specialists (Data Scientists, ML Engineers)
+- DevOps & Infrastructure (Cloud, Security, SRE)
+- Product & Design (PM, UX, UI)
+- Business & Strategy (Analyst, Consultant)
+- And 40+ more specialized roles
+
+### Reasoning Frameworks:
+- **Chain-of-Thought (CoT)**: Step-by-step logical reasoning
+- **Tree-of-Thoughts (ToT)**: Branching exploration of solutions
+- **Confidence Scoring**: 0-100% match with rationale
 
 ## 🤝 Contributing
 
@@ -186,33 +180,50 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 
 ### Development Setup:
 ```bash
-# Install dependencies
-npm install
-pip install -r requirements.txt
+# Clone with submodules
+git clone --recursive https://github.com/justmy2satoshis/mcp-federation-core.git
+
+# Install dev dependencies
+npm install --dev
+pip install -r requirements-dev.txt
 
 # Run tests
 npm test
-python -m pytest
-
-# Start development server
-npm run dev
+pytest tests/
 ```
 
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-## 🔗 Links
+## 🔗 Related Projects
 
-- **Documentation**: [Full Docs](https://github.com/justmy2satoshis/mcp-federation-core/wiki)
-- **Pro Version**: [MCP Federation Suite](https://github.com/justmy2satoshis/mcp-federation-suite)
-- **Issues**: [Report Bug](https://github.com/justmy2satoshis/mcp-federation-core/issues)
-- **Discord**: Coming soon
+- [expert-role-prompt](https://github.com/justmy2satoshis/expert-role-prompt) - Standalone expert role MCP
+- [Claude Desktop](https://claude.ai/download) - Required for MCP integration
+- [MCP Specification](https://modelcontextprotocol.io) - Official MCP documentation
 
-## 🙏 Acknowledgments
+## 📞 Support
 
-Built with the Model Context Protocol by Anthropic.
+- **Issues**: [GitHub Issues](https://github.com/justmy2satoshis/mcp-federation-core/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/justmy2satoshis/mcp-federation-core/discussions)
+- **Email**: notyourbuddyfriend2@protonmail.com
+
+## 🚀 Roadmap
+
+### Current Version (2.0.0 - Basic):
+- ✅ 15 MCPs with unified database
+- ✅ Cross-MCP communication
+- ✅ Expert role system
+- ✅ REST API integration
+
+### Coming Soon (3.0.0 - Pro):
+- 🔄 30+ MCPs including advanced AI/ML
+- 🔄 Web dashboard for monitoring
+- 🔄 Enterprise authentication (OAuth, SAML)
+- 🔄 Cloud synchronization
+- 🔄 Advanced workflow automation
+- 🔄 GPU acceleration support
 
 ---
 
-**Ready to scale?** Check out [MCP Federation Suite](https://github.com/justmy2satoshis/mcp-federation-suite) for enterprise features and advanced orchestration capabilities.
+**Built with ❤️ by justmy2satoshis**
