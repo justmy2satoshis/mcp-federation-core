@@ -1,0 +1,50 @@
+{
+  "name": "expert-role-prompt",
+  "version": "3.0.0",
+  "description": "Advanced Expert Role Prompt MCP with comprehensive role library and workflow orchestration",
+  "author": "Enterprise MCP Suite",
+  "main": "server.js",
+  "runtime": "node",
+  "features": [
+    "expert-role-library",
+    "workflow-orchestration",
+    "custom-workflows",
+    "role-marketplace",
+    "performance-optimization",
+    "monitoring-infrastructure"
+  ],
+  "tools": [
+    {
+      "name": "set_expert_role",
+      "description": "Activate a specific expert role persona"
+    },
+    {
+      "name": "create_custom_workflow",
+      "description": "Create custom workflow with multiple expert roles"
+    },
+    {
+      "name": "get_available_roles",
+      "description": "List all available expert roles and capabilities"
+    },
+    {
+      "name": "execute_workflow",
+      "description": "Execute a predefined expert workflow"
+    },
+    {
+      "name": "marketplace_search",
+      "description": "Search the role marketplace for specialized experts"
+    }
+  ],
+  "dependencies": {
+    "node": ">=18.0.0",
+    "@modelcontextprotocol/sdk": "^0.8.0",
+    "sqlite3": "^5.1.6",
+    "express": "^4.18.0"
+  },
+  "configuration": {
+    "database_path": "./workflow.db",
+    "monitoring_enabled": true,
+    "marketplace_api": "https://api.expert-roles.com",
+    "cache_ttl": 3600
+  }
+}

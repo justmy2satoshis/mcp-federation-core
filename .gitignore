@@ -1,0 +1,38 @@
+# Windows User Profile Files
+NTUSER.DAT*
+ntuser.*
+Desktop/
+Documents/
+Downloads/
+Pictures/
+Videos/
+Music/
+Contacts/
+Favorites/
+Links/
+Searches/
+OneDrive/
+AppData/
+"Saved Games/"
+
+# Logs and Cache
+*.log
+.cache/
+.claude-server-commander-logs/
+.claude-server-commander/
+.config/
+.local/
+.redhat/
+.ssh/
+.rag-context-mcp/
+
+# MCP Project Files to Include
+!mcp-servers/
+!mcp-unified.db
+!test_mcp_persistence.py
+!MCP_*.md
+!*.py
+
+# Node modules (if any)
+node_modules/
+package-lock.json

@@ -1,0 +1,24 @@
+{
+  "name": "@mcp/expert-role-prompt-enhanced",
+  "version": "2.0.0",
+  "description": "Enhanced MCP server with 50+ expert roles, CoT/ToT reasoning, and improved confidence scoring",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test-server.js"
+  },
+  "author": "Enhanced by MCP Optimization System",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.18.1",
+    "ws": "^8.18.3"
+  },
+  "keywords": [
+    "mcp",
+    "expert-roles",
+    "chain-of-thought",
+    "tree-of-thoughts",
+    "reasoning",
+    "prompt-engineering"
+  ]
+}
