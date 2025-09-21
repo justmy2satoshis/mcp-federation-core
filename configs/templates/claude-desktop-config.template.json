@@ -1,0 +1,102 @@
+{
+  "mcpServers": {
+    "// Configuration template for Claude Desktop": "",
+    "// Replace paths and API keys with your values": "",
+
+    "expert-role-prompt": {
+      "command": "node",
+      "args": ["C:\\Users\\[USERNAME]\\mcp-servers\\mcps\\expert-role-prompt\\server.js"],
+      "env": {"NODE_NO_WARNINGS": "1"}
+    },
+    "kimi-k2-resilient": {
+      "command": "python",
+      "args": ["C:\\Users\\[USERNAME]\\mcp-servers\\mcps\\kimi-k2-resilient-enhanced\\server.py"],
+      "env": {}
+    },
+    "kimi-k2-code-context": {
+      "command": "python",
+      "args": ["C:\\Users\\[USERNAME]\\mcp-servers\\mcps\\kimi-k2-code-context-enhanced\\server.py"],
+      "env": {}
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "C:\\Users\\[USERNAME]\\Documents"],
+      "env": {"NODE_NO_WARNINGS": "1"}
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "env": {"NODE_NO_WARNINGS": "1"}
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "env": {"NODE_NO_WARNINGS": "1"}
+    },
+    "desktop-commander": {
+      "command": "npx",
+      "args": ["-y", "@wonderwhy-er/desktop-commander@latest"],
+      "env": {"NODE_NO_WARNINGS": "1"}
+    },
+    "perplexity": {
+      "command": "npx",
+      "args": ["-y", "server-perplexity-ask"],
+      "env": {
+        "NODE_NO_WARNINGS": "1",
+        "PERPLEXITY_API_KEY": "[YOUR_KEY]"
+      }
+    },
+    "converse": {
+      "command": "npx",
+      "args": ["-y", "converse-mcp-server"],
+      "env": {
+        "NODE_NO_WARNINGS": "1",
+        "OPENAI_API_KEY": "[YOUR_KEY]",
+        "GEMINI_API_KEY": "[YOUR_KEY]"
+      }
+    },
+    "rag-context": {
+      "command": "npx",
+      "args": ["-y", "@notbnull/mcp-rag-context"],
+      "env": {
+        "NODE_NO_WARNINGS": "1",
+        "RAG_DATA_DIR": "C:\\Users\\[USERNAME]\\ClaudeRAG\\data",
+        "RAG_LOG_DIR": "C:\\Users\\[USERNAME]\\ClaudeRAG\\logs"
+      },
+      "timeout": 120000
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@0.0.37", "--browser", "chromium"],
+      "env": {"NODE_NO_WARNINGS": "1"}
+    },
+    "sqlite": {
+      "command": "npx",
+      "args": ["-y", "mcp-sqlite", "C:\\Users\\[USERNAME]\\mcp-servers\\databases\\sqlite\\unified.db"],
+      "env": {"NODE_NO_WARNINGS": "1"}
+    },
+    "git-ops": {
+      "command": "npx",
+      "args": ["-y", "@cyanheads/git-mcp-server"],
+      "env": {
+        "NODE_NO_WARNINGS": "1",
+        "GIT_REPO_PATH": "C:\\Users\\[USERNAME]\\mcp-servers"
+      }
+    },
+    "github-manager": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "[YOUR_TOKEN]"
+      }
+    },
+    "web-search": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "NODE_NO_WARNINGS": "1",
+        "BRAVE_API_KEY": "[YOUR_KEY]"
+      }
+    }
+  }
+}
