@@ -1,0 +1,55 @@
+# Sensitive files
+*.db
+*.sqlite
+*.db-journal
+.env
+.env.*
+**/.rag-context-mcp/
+**/memories.db
+
+# API Keys and Secrets
+**/api_keys.json
+**/credentials.json
+**/.credentials
+**/.gemini/
+**/.ollama/
+
+# Node.js
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Build
+dist/
+build/
+*.egg-info/
+
+# Claude specific
+.claude/
+.claude.json
+.claude.json.backup
+.claude-server-commander/

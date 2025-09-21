@@ -1,0 +1,21 @@
+{
+  "// Configuration template for Claude Code CLI": "",
+  "// Use 'claude mcp add' commands or edit the generated .claude.json": "",
+  "// Example commands to add MCPs": [
+    "claude mcp add expert-role-prompt node C:\\Users\\[USERNAME]\\mcp-servers\\mcps\\expert-role-prompt\\server.js",
+    "claude mcp add kimi-k2-resilient python C:\\Users\\[USERNAME]\\mcp-servers\\mcps\\kimi-k2-resilient-enhanced\\server.py",
+    "claude mcp add kimi-k2-code-context python C:\\Users\\[USERNAME]\\mcp-servers\\mcps\\kimi-k2-code-context-enhanced\\server.py",
+    "claude mcp add filesystem npx -e NODE_NO_WARNINGS=1 -- -y \"@modelcontextprotocol/server-filesystem\" \"C:\\Users\\[USERNAME]\\Documents\"",
+    "claude mcp add memory npx -e NODE_NO_WARNINGS=1 -- -y \"@modelcontextprotocol/server-memory\"",
+    "claude mcp add sequential-thinking npx -e NODE_NO_WARNINGS=1 -- -y \"@modelcontextprotocol/server-sequential-thinking\"",
+    "claude mcp add desktop-commander npx -e NODE_NO_WARNINGS=1 -- -y \"@wonderwhy-er/desktop-commander@latest\"",
+    "claude mcp add perplexity npx -e NODE_NO_WARNINGS=1 -e PERPLEXITY_API_KEY=[YOUR_KEY] -- -y \"server-perplexity-ask\"",
+    "claude mcp add converse npx -e NODE_NO_WARNINGS=1 -e OPENAI_API_KEY=[YOUR_KEY] -e GEMINI_API_KEY=[YOUR_KEY] -- -y \"converse-mcp-server\"",
+    "claude mcp add rag-context npx -e NODE_NO_WARNINGS=1 -e RAG_DATA_DIR=\"C:\\Users\\[USERNAME]\\ClaudeRAG\\data\" -e RAG_LOG_DIR=\"C:\\Users\\[USERNAME]\\ClaudeRAG\\logs\" -- -y \"@notbnull/mcp-rag-context\"",
+    "claude mcp add playwright npx -e NODE_NO_WARNINGS=1 -- -y \"@playwright/mcp@0.0.37\" --browser chromium",
+    "claude mcp add sqlite npx -e NODE_NO_WARNINGS=1 -- -y \"mcp-sqlite\" \"C:\\Users\\[USERNAME]\\mcp-servers\\databases\\sqlite\\unified.db\"",
+    "claude mcp add git-ops npx -e NODE_NO_WARNINGS=1 -e GIT_REPO_PATH=\"C:\\Users\\[USERNAME]\\mcp-servers\" -- -y \"@cyanheads/git-mcp-server\"",
+    "claude mcp add github-manager npx -e GITHUB_PERSONAL_ACCESS_TOKEN=[YOUR_TOKEN] -- -y \"@modelcontextprotocol/server-github\"",
+    "claude mcp add web-search npx -e NODE_NO_WARNINGS=1 -e BRAVE_API_KEY=[YOUR_KEY] -- -y \"@modelcontextprotocol/server-brave-search\""
+  ]
+}

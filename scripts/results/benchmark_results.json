@@ -1,0 +1,24 @@
+{
+  "timestamp": "2025-09-21 07:31:20",
+  "database": {
+    "avg_write_ms": 5.66723600088153,
+    "avg_read_ms": 0.03139299980830401,
+    "avg_cross_query_ms": 0.02937199897132814,
+    "total_operations": 250
+  },
+  "startup": {
+    "expert-role-prompt": 507.81460001599044,
+    "kimi-k2-code-context-enhanced": 507.48319999547675,
+    "kimi-k2-resilient-enhanced": 506.95660000201315
+  },
+  "resources": {
+    "cpu_percent": 0.4,
+    "memory_usage_mb": 20.96875,
+    "available_memory_gb": 31.089035034179688,
+    "disk_usage_percent": 12.2
+  },
+  "system": {
+    "cpu_cores": 32,
+    "total_ram_gb": 61.60197830200195
+  }
+}

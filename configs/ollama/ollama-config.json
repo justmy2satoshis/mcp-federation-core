@@ -1,0 +1,65 @@
+{
+  "name": "Ollama Local LLM Integration",
+  "version": "1.0.0",
+  "description": "Configuration for Ollama models through Converse MCP",
+
+  "endpoints": {
+    "base_url": "http://localhost:11434",
+    "api_version": "v1",
+    "timeout": 120000,
+    "stream": true
+  },
+
+  "models": {
+    "available": [
+      {
+        "name": "codellama:7b",
+        "type": "code",
+        "context_length": 4096,
+        "description": "Code-focused Llama model, 7B parameters"
+      },
+      {
+        "name": "llama3.2:3b",
+        "type": "general",
+        "context_length": 8192,
+        "description": "Llama 3.2 compact model, 3B parameters"
+      },
+      {
+        "name": "phi3:mini",
+        "type": "general",
+        "context_length": 4096,
+        "description": "Microsoft Phi-3 mini model, 3.8B parameters"
+      }
+    ],
+    "default": "llama3.2:3b",
+    "fallback": "phi3:mini"
+  },
+
+  "integration": {
+    "converse_mcp": {
+      "provider": "ollama",
+      "api_format": "openai_compatible",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "routes": {
+        "chat": "/api/chat",
+        "generate": "/api/generate",
+        "embeddings": "/api/embeddings"
+      }
+    }
+  },
+
+  "performance": {
+    "max_concurrent": 3,
+    "retry_attempts": 3,
+    "retry_delay": 1000,
+    "connection_pooling": true
+  },
+
+  "test_prompts": {
+    "simple": "Hello, how are you?",
+    "code": "Write a Python function to calculate factorial",
+    "reasoning": "Explain the concept of recursion with an example"
+  }
+}
