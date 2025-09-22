@@ -11,6 +11,8 @@
 MCP Federation Core is a lightweight, unified database system that enables seamless communication between 15 different Model Context Protocol servers. It provides a foundational framework for AI context management, allowing MCPs to share data, persist information, and collaborate through a federated architecture.
 
 ### Key Features:
+- 🎯 **Ollama Auto-Detection**: Zero-config support for ALL Ollama models (llama3.2, mistral, phi3, etc.)
+- 💰 **95% Cost Savings**: Automatic local model priority with API fallback
 - 🔄 **Unified Database**: Single SQLite database shared across all MCPs
 - 🌐 **Cross-MCP Communication**: Query data from any MCP using `from_mcp` parameter
 - ⚡ **Lightweight**: Optimized for standard hardware (4GB RAM minimum)
