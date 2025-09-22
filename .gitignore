@@ -1,38 +1,64 @@
-# Windows User Profile Files
-NTUSER.DAT*
-ntuser.*
-Desktop/
-Documents/
-Downloads/
-Pictures/
-Videos/
-Music/
-Contacts/
-Favorites/
-Links/
-Searches/
-OneDrive/
-AppData/
-"Saved Games/"
+# Environment variables
+.env
+.env.local
+.env.production
+*.env
 
-# Logs and Cache
-*.log
-.cache/
-.claude-server-commander-logs/
-.claude-server-commander/
-.config/
-.local/
-.redhat/
-.ssh/
-.rag-context-mcp/
+# API Keys and Secrets
+*api_keys*
+*secrets*
+*credentials*
 
-# MCP Project Files to Include
-!mcp-servers/
-!mcp-unified.db
-!test_mcp_persistence.py
-!MCP_*.md
-!*.py
+# User-specific paths
+*backup*
+*test-clean*
+*oneliner-test*
 
-# Node modules (if any)
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+venv/
+env/
+
+# Node
 node_modules/
-package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Databases (exclude from repo, will be created on install)
+*.db
+*.sqlite
+*.sqlite3
+*.npz
+*.npy
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test outputs
+test_results/
+coverage/
+.coverage
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
