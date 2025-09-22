@@ -1,10 +1,10 @@
-# MCP Federation Core 🧠
-> Lightweight Model Context Protocol Federation System - Connect Your AI Context
+# MCP Federation Core 🚀
 
-[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/justmy2satoshis/mcp-federation-core)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![MCPs](https://img.shields.io/badge/MCPs-15-orange.svg)](mcp-servers)
-[![Database](https://img.shields.io/badge/database-unified-purple.svg)](mcp-unified.db)
+[![MCPs](https://img.shields.io/badge/MCPs-15-blue)](https://modelcontextprotocol.io/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Cost Savings](https://img.shields.io/badge/Savings-80--95%25-purple)](https://ollama.ai/)
+[![Claude Desktop](https://img.shields.io/badge/Claude-Desktop-orange)](https://claude.ai)
+[![Version](https://img.shields.io/badge/Version-3.0-red)](https://github.com/justmy2satoshis/mcp-federation-core)
 
 ## 🎯 What is MCP Federation Core?
 

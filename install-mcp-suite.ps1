@@ -1,14 +1,20 @@
-# MCP Federation Core Installer
-# PowerShell script to install the complete MCP suite
+# MCP Federation Suite Installer v3.0
+# Complete installation of 15 MCPs for Claude Desktop
+# Updated: 2025-09-22 with all fixes and GitHub repositories
 
 param(
-    [string]$InstallPath = "$env:USERPROFILE",
-    [switch]$SkipDependencies = $false
+    [string]$InstallPath = "$env:USERPROFILE\mcp-servers",
+    [switch]$SkipDependencies = $false,
+    [switch]$SkipOllama = $false
 )
 
-Write-Host "================================================" -ForegroundColor Cyan
-Write-Host "    MCP Federation Core Installer v2.0         " -ForegroundColor Cyan  
-Write-Host "================================================" -ForegroundColor Cyan
+Write-Host @"
+==============================================================
+   MCP FEDERATION SUITE INSTALLER v3.0
+   15 MCPs + Ollama Integration for Claude Desktop
+   80-95% Cost Savings via Local Model Prioritization
+==============================================================
+"@ -ForegroundColor Cyan
 Write-Host ""
 
 # Function to check if a command exists
