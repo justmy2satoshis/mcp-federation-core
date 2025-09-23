@@ -29,6 +29,13 @@ try {
     exit 1
 }
 
+# Check Python version
+Write-Host "Checking Python version..." -ForegroundColor Yellow
+$pythonVersion = python --version 2>&1
+if ($pythonVersion -match "3\.(1[1-9]|[2-9][0-9])") {
+    Write-Host "  Python 3.11+ detected - installer will handle package installation properly" -ForegroundColor Green
+}
+
 # Run the installer
 Write-Host ""
 Write-Host "Starting installation..." -ForegroundColor Yellow
@@ -40,6 +47,24 @@ Set-Location $installPath
 if (Test-Path $installerPath) {
     # Run installer with proper execution
     & $installerPath
+
+    # Check if installation succeeded
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host ""
+        Write-Host "============================================" -ForegroundColor Yellow
+        Write-Host "Installation encountered issues" -ForegroundColor Yellow
+        Write-Host "============================================" -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "If you saw pip errors, try one of these:" -ForegroundColor Cyan
+        Write-Host "  1. Run installer skipping Python:" -ForegroundColor White
+        Write-Host "     .\installer.ps1 -SkipPython" -ForegroundColor Green
+        Write-Host ""
+        Write-Host "  2. Install Python packages manually:" -ForegroundColor White
+        Write-Host "     pip install mcp pydantic aiohttp numpy --break-system-packages" -ForegroundColor Green
+        Write-Host ""
+        Write-Host "  3. Use a Python virtual environment" -ForegroundColor White
+        Write-Host ""
+    }
 } else {
     Write-Host "Installer not found at: $installerPath" -ForegroundColor Red
     exit 1

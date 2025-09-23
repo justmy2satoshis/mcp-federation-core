@@ -4,6 +4,7 @@
 
 param(
     [switch]$SkipOllama,
+    [switch]$SkipPython,
     [switch]$QuickInstall,
     [switch]$UpdateOnly,
     [switch]$Force,
@@ -265,15 +266,48 @@ if (-not $WhatIf) {
 }
 
 # Install Python packages
-if (-not $UpdateOnly -and -not $WhatIf) {
+if ($SkipPython) {
+    Write-Host ""
+    Write-Host "[PYTHON] Skipping Python package installation (-SkipPython flag)" -ForegroundColor Yellow
+} elseif (-not $UpdateOnly -and -not $WhatIf) {
     Write-Host ""
     Write-Host "[PYTHON] Installing required packages..." -ForegroundColor Yellow
+
+    # Check Python version for PEP 668 compliance (Python 3.11+)
+    $pythonVersion = python --version 2>&1
+    $needsBreakFlag = $false
+
+    if ($pythonVersion -match "Python (\d+)\.(\d+)") {
+        $majorVersion = [int]$matches[1]
+        $minorVersion = [int]$matches[2]
+        if ($majorVersion -eq 3 -and $minorVersion -ge 11) {
+            $needsBreakFlag = $true
+            Write-Host "  Python 3.11+ detected - using --break-system-packages flag" -ForegroundColor Gray
+        }
+    }
 
     $packages = @("mcp", "pydantic", "aiohttp", "numpy")
     foreach ($package in $packages) {
         Write-Host "  Installing $package..." -ForegroundColor Gray -NoNewline
-        pip install -q $package 2>$null
-        Write-Host " Done" -ForegroundColor Green
+
+        # Try installation with appropriate flags
+        $installed = $false
+        if ($needsBreakFlag) {
+            pip install -q $package --break-system-packages 2>$null
+            $installed = ($LASTEXITCODE -eq 0)
+        }
+
+        # Fallback to standard install if needed
+        if (-not $installed) {
+            pip install -q $package 2>$null
+            $installed = ($LASTEXITCODE -eq 0)
+        }
+
+        if ($installed) {
+            Write-Host " Done" -ForegroundColor Green
+        } else {
+            Write-Host " Failed" -ForegroundColor Yellow
+        }
     }
 }
 

@@ -39,6 +39,21 @@ cd mcp-federation-core
 .\installer.ps1
 ```
 
+### Installation Options
+```powershell
+# Skip Python package installation (if you have pip issues)
+.\installer.ps1 -SkipPython
+
+# Skip Ollama installation
+.\installer.ps1 -SkipOllama
+
+# Force reinstall (overwrite existing)
+.\installer.ps1 -Force
+
+# Combine options as needed
+.\installer.ps1 -SkipPython -SkipOllama
+```
+
 ### 🤔 Which Installation Method Should I Use?
 
 | Scenario | Recommended Method |
@@ -83,6 +98,18 @@ The installer will:
 - ✅ Preserve any existing personal MCPs you have configured
 
 ## 🔧 Troubleshooting
+
+### Python Package Installation Errors (pip)
+**For Python 3.11+ users**: The installer automatically handles the `--break-system-packages` requirement.
+
+If you still see pip errors:
+```powershell
+# Option 1: Skip Python packages during installation
+.\installer.ps1 -SkipPython
+
+# Option 2: Install packages manually with the required flag
+pip install mcp pydantic aiohttp numpy --break-system-packages
+```
 
 ### "Malicious Content" or Antivirus Blocking
 - Use the two-step process above (downloads first, runs locally)
