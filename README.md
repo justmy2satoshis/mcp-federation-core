@@ -108,7 +108,7 @@ If you still see pip errors:
 .\installer.ps1 -SkipPython
 
 # Option 2: Install packages manually with the required flag
-pip install mcp pydantic aiohttp numpy --break-system-packages
+python -m pip install mcp pydantic aiohttp numpy --break-system-packages
 ```
 
 ### "Malicious Content" or Antivirus Blocking
