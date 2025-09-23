@@ -1,5 +1,5 @@
-# MCP Federation Core Installer v3.2.1
-# Fixed syntax errors and improved MCP detection
+# MCP Federation Core Installer v3.2.2 - FIXED VERSION
+# This version ACTUALLY configures MCPs (not just prints messages)
 # GitHub: https://github.com/justmy2satoshis/mcp-federation-core
 
 param(
@@ -17,7 +17,7 @@ $ProgressPreference = "SilentlyContinue"
 # Display banner - ASCII art without special characters
 Write-Host ""
 Write-Host "============================================================================" -ForegroundColor Cyan
-Write-Host "                   MCP FEDERATION CORE v3.2.1                              " -ForegroundColor Cyan
+Write-Host "                   MCP FEDERATION CORE v3.2.2 FIXED                        " -ForegroundColor Cyan
 Write-Host "               15 MCPs | Unified Database | Easy Setup                     " -ForegroundColor White
 Write-Host "============================================================================" -ForegroundColor Cyan
 Write-Host ""
@@ -30,23 +30,86 @@ $backupDir = "$baseDir\backups\$timestamp"
 $installerUnifiedDir = "$baseDir\installers\unified"
 $dbPath = "$baseDir\mcp-unified.db"
 
-# Federation MCP list with all name variations
-$federationMCPs = @{
-    'sqlite' = @('sqlite', 'sqlite-data-warehouse', 'sqlite-mcp')
-    'expert-role-prompt' = @('expert-role-prompt', 'expert_role_prompt')
-    'kimi-k2-resilient-enhanced' = @('kimi-k2-resilient-enhanced', 'kimi-k2-resilient', 'kimi_k2_resilient')
-    'kimi-k2-code-context-enhanced' = @('kimi-k2-code-context-enhanced', 'kimi-k2-code-context', 'kimi_k2_code_context')
-    'rag-context' = @('rag-context', 'rag_context', 'rag-context-fixed')
-    'converse' = @('converse', 'converse-mcp')
-    'web-search' = @('web-search', 'web_search', 'brave-search')
-    'github-manager' = @('github-manager', 'github_manager', 'github')
-    'memory' = @('memory', 'memory-mcp')
-    'filesystem' = @('filesystem', 'filesystem-mcp')
-    'desktop-commander' = @('desktop-commander', 'desktop_commander')
-    'perplexity' = @('perplexity', 'perplexity-mcp')
-    'playwright' = @('playwright', 'playwright-mcp')
-    'git-ops' = @('git-ops', 'git_ops', 'gitops')
-    'sequential-thinking' = @('sequential-thinking', 'sequential_thinking')
+# Federation MCP configurations with ACTUAL DETAILS
+$federationMCPConfigs = @{
+    'sqlite' = @{
+        command = "npx"
+        args = @("-y", "@modelcontextprotocol/server-sqlite", "$dbPath")
+    }
+    'expert-role-prompt' = @{
+        command = "node"
+        args = @("$baseDir\expert-role-prompt\index.js")
+    }
+    'kimi-k2-resilient-enhanced' = @{
+        command = "python"
+        args = @("-m", "kimi_k2_resilient")
+        env = @{
+            KIMI_DB_PATH = "$baseDir\kimi-resilient.db"
+        }
+    }
+    'kimi-k2-code-context-enhanced' = @{
+        command = "python"
+        args = @("-m", "kimi_k2_code_context")
+    }
+    'rag-context' = @{
+        command = "python"
+        args = @("-m", "rag_context")
+        env = @{
+            RAG_DB_PATH = "$baseDir\rag-context.db"
+        }
+    }
+    'converse' = @{
+        command = "node"
+        args = @("$baseDir\converse\index.js")
+    }
+    'web-search' = @{
+        command = "npx"
+        args = @("-y", "@modelcontextprotocol/server-brave-search")
+        env = @{
+            BRAVE_API_KEY = "YOUR_BRAVE_API_KEY"
+        }
+    }
+    'github-manager' = @{
+        command = "npx"
+        args = @("-y", "@modelcontextprotocol/server-github")
+        env = @{
+            GITHUB_TOKEN = "YOUR_GITHUB_TOKEN"
+        }
+    }
+    'memory' = @{
+        command = "npx"
+        args = @("-y", "@modelcontextprotocol/server-memory")
+    }
+    'filesystem' = @{
+        command = "npx"
+        args = @("-y", "@modelcontextprotocol/server-filesystem")
+        env = @{
+            ALLOWED_PATHS = "$HOME"
+        }
+    }
+    'desktop-commander' = @{
+        command = "node"
+        args = @("$baseDir\desktop-commander\index.js")
+    }
+    'perplexity' = @{
+        command = "node"
+        args = @("$baseDir\perplexity\index.js")
+        env = @{
+            PERPLEXITY_API_KEY = "YOUR_PERPLEXITY_API_KEY"
+        }
+    }
+    'playwright' = @{
+        command = "npx"
+        args = @("-y", "@modelcontextprotocol/server-playwright")
+    }
+    'git-ops' = @{
+        command = "npx"
+        args = @("-y", "@modelcontextprotocol/server-git")
+    }
+    'sequential-thinking' = @{
+        command = "node"
+        args = @("$baseDir\sequential-thinking\index.js")
+    }
 }
 
 # Function to test admin rights
@@ -112,32 +175,6 @@ function Get-ExistingMCPs {
     return $existing
 }
 
-# Function to check for conflicts
-function Test-MCPConflicts {
-    param(
-        [string]$ConfigPath,
-        [hashtable]$FederationMCPs
-    )
-
-    $existing = Get-ExistingMCPs -ConfigPath $ConfigPath
-    $conflicts = @()
-
-    foreach ($mcp in $FederationMCPs.Keys) {
-        foreach ($variant in $FederationMCPs[$mcp]) {
-            if ($variant -in $existing) {
-                $conflicts += $variant
-                break
-            }
-        }
-    }
-
-    return @{
-        Existing = $existing
-        Conflicts = $conflicts
-        HasConflicts = ($conflicts.Count -gt 0)
-    }
-}
-
 # Main installation logic
 if ($WhatIf) {
     Write-Host "[WHATIF MODE] No changes will be made" -ForegroundColor Yellow
@@ -172,21 +209,28 @@ if (-not $prereqMet -and -not $Force) {
     exit 1
 }
 
-# Check for conflicts
+# Check for existing MCPs
 Write-Host ""
 Write-Host "[ANALYSIS] Checking for existing MCPs..." -ForegroundColor Yellow
 
-$conflictCheck = Test-MCPConflicts -ConfigPath $configPath -FederationMCPs $federationMCPs
+$existingMCPs = Get-ExistingMCPs -ConfigPath $configPath
+$conflictingMCPs = @()
 
-if ($conflictCheck.Existing.Count -gt 0) {
-    Write-Host "  Found $($conflictCheck.Existing.Count) existing MCPs" -ForegroundColor Cyan
-    if ($conflictCheck.HasConflicts) {
-        Write-Host "  Conflicts detected with $($conflictCheck.Conflicts.Count) Federation MCPs" -ForegroundColor Yellow
+foreach ($mcp in $federationMCPConfigs.Keys) {
+    if ($mcp -in $existingMCPs) {
+        $conflictingMCPs += $mcp
+    }
+}
+
+if ($existingMCPs.Count -gt 0) {
+    Write-Host "  Found $($existingMCPs.Count) existing MCPs" -ForegroundColor Cyan
+    if ($conflictingMCPs.Count -gt 0) {
+        Write-Host "  Conflicts detected with $($conflictingMCPs.Count) Federation MCPs" -ForegroundColor Yellow
     }
 }
 
 # Create backup if needed
-if ($conflictCheck.Existing.Count -gt 0 -and -not $WhatIf) {
+if ($existingMCPs.Count -gt 0 -and -not $WhatIf) {
     Write-Host ""
     Write-Host "[BACKUP] Creating configuration backup..." -ForegroundColor Yellow
 
@@ -200,11 +244,11 @@ if ($conflictCheck.Existing.Count -gt 0 -and -not $WhatIf) {
 }
 
 # Handle conflicts
-if ($conflictCheck.HasConflicts -and -not $Force) {
+if ($conflictingMCPs.Count -gt 0 -and -not $Force) {
     Write-Host ""
     Write-Host "[CONFLICT] The following MCPs will be replaced:" -ForegroundColor Yellow
 
-    foreach ($conflict in $conflictCheck.Conflicts) {
+    foreach ($conflict in $conflictingMCPs) {
         Write-Host "  - $conflict" -ForegroundColor Yellow
     }
 
@@ -316,19 +360,85 @@ if ($SkipPython) {
     }
 }
 
-# Configure MCPs
+# CRITICAL FIX: ACTUALLY Configure MCPs (not just print messages)
 if (-not $WhatIf) {
     Write-Host ""
     Write-Host "[CONFIGURATION] Setting up Federation MCPs..." -ForegroundColor Yellow
 
-    # This would contain the actual MCP configuration logic
-    # For now, just show what would be configured
-
-    foreach ($mcp in $federationMCPs.Keys) {
-        Write-Host "  Configuring: $mcp" -ForegroundColor Gray
+    # Load existing config or create new one
+    if (Test-Path $configPath) {
+        Write-Host "  Loading existing configuration..." -ForegroundColor Gray
+        $config = Get-Content $configPath -Raw | ConvertFrom-Json
+    } else {
+        Write-Host "  Creating new configuration..." -ForegroundColor Gray
+        $config = @{
+            mcpServers = @{}
+        } | ConvertTo-Json | ConvertFrom-Json
     }
 
-    Write-Host "  All MCPs configured" -ForegroundColor Green
+    # Ensure mcpServers property exists
+    if (-not $config.mcpServers) {
+        $config | Add-Member -NotePropertyName "mcpServers" -NotePropertyValue @{} -Force
+    }
+
+    # ACTUALLY ADD EACH MCP CONFIGURATION
+    $configuredCount = 0
+    foreach ($mcpName in $federationMCPConfigs.Keys) {
+        Write-Host "  Configuring: $mcpName" -ForegroundColor Gray
+
+        $mcpConfig = $federationMCPConfigs[$mcpName]
+
+        # Create the MCP entry
+        $mcpEntry = @{
+            command = $mcpConfig.command
+            args = $mcpConfig.args
+        }
+
+        # Add environment variables if present
+        if ($mcpConfig.env) {
+            $mcpEntry.env = $mcpConfig.env
+        }
+
+        # Add to config
+        if ($config.mcpServers.PSObject.Properties.Name -contains $mcpName) {
+            $config.mcpServers.PSObject.Properties.Remove($mcpName)
+        }
+        $config.mcpServers | Add-Member -NotePropertyName $mcpName -NotePropertyValue $mcpEntry -Force
+
+        $configuredCount++
+    }
+
+    # CRITICAL: SAVE THE CONFIGURATION TO FILE
+    Write-Host "  Saving configuration to: $configPath" -ForegroundColor Yellow
+
+    try {
+        # Ensure directory exists
+        $configDir = Split-Path $configPath -Parent
+        if (-not (Test-Path $configDir)) {
+            New-Item -ItemType Directory -Path $configDir -Force | Out-Null
+        }
+
+        # Save with proper formatting
+        $jsonContent = $config | ConvertTo-Json -Depth 10
+        $jsonContent | Set-Content -Path $configPath -Encoding UTF8 -Force
+
+        Write-Host "  Configuration saved successfully!" -ForegroundColor Green
+
+        # VERIFY the save worked
+        Write-Host "  Verifying configuration..." -ForegroundColor Yellow
+        $verification = Get-Content $configPath -Raw | ConvertFrom-Json
+        $verifiedCount = @($verification.mcpServers.PSObject.Properties.Name).Count
+
+        if ($verifiedCount -eq $configuredCount) {
+            Write-Host "  Verified: $verifiedCount MCPs configured successfully" -ForegroundColor Green
+        } else {
+            Write-Host "  WARNING: Expected $configuredCount MCPs but found $verifiedCount" -ForegroundColor Red
+        }
+    }
+    catch {
+        Write-Host "  ERROR: Failed to save configuration: $_" -ForegroundColor Red
+        exit 1
+    }
 }
 
 # Create database
@@ -367,8 +477,24 @@ Write-Host "====================================================================
 Write-Host "                        INSTALLATION COMPLETE                               " -ForegroundColor Green
 Write-Host "============================================================================" -ForegroundColor Green
 Write-Host ""
-Write-Host "Summary:" -ForegroundColor Cyan
-Write-Host "  - MCPs Configured: 15" -ForegroundColor White
+
+if (-not $WhatIf) {
+    # Show actual configuration count
+    try {
+        $finalConfig = Get-Content $configPath -Raw | ConvertFrom-Json
+        $actualMCPCount = @($finalConfig.mcpServers.PSObject.Properties.Name).Count
+        Write-Host "Summary:" -ForegroundColor Cyan
+        Write-Host "  - MCPs Configured: $actualMCPCount" -ForegroundColor White
+    }
+    catch {
+        Write-Host "Summary:" -ForegroundColor Cyan
+        Write-Host "  - MCPs Configured: Unknown (could not verify)" -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "Summary:" -ForegroundColor Cyan
+    Write-Host "  - MCPs to Configure: 15" -ForegroundColor White
+}
+
 Write-Host "  - Database: $dbPath" -ForegroundColor White
 Write-Host "  - Uninstaller: $installerUnifiedDir\uninstall.bat" -ForegroundColor White
 
@@ -379,7 +505,7 @@ if ($backupPath) {
 Write-Host ""
 Write-Host "Next Steps:" -ForegroundColor Cyan
 Write-Host "  1. Restart Claude Desktop" -ForegroundColor White
-Write-Host "  2. Verify all 15 MCPs appear in settings" -ForegroundColor White
+Write-Host "  2. Verify all MCPs appear in settings" -ForegroundColor White
 Write-Host "  3. Configure API keys as needed" -ForegroundColor White
 Write-Host ""
 
