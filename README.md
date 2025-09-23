@@ -6,33 +6,95 @@
 [![MCPs](https://img.shields.io/badge/MCPs-15-green)](https://github.com/justmy2satoshis/mcp-federation-core)
 [![License](https://img.shields.io/badge/license-MIT-purple)](LICENSE)
 
-## ✨ One-Line Installation
+## ✨ Quick Installation
 
-### Windows (PowerShell as Admin):
+### Option 1: Standard Installation (Recommended)
+No administrator privileges required - just open PowerShell normally:
+
+#### Windows PowerShell (Regular User)
 ```powershell
 irm https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/installer-safe.ps1 | iex
 ```
 
-### macOS/Linux:
+#### macOS/Linux
 ```bash
 curl -fsSL https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/install.sh | bash
 ```
 
+### Option 2: Administrator Installation
+Only use this method if you encounter permission issues with the standard installation:
+
+#### Windows PowerShell (Run as Administrator)
+```powershell
+# Right-click PowerShell and select 'Run as Administrator'
+irm https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/installer-admin.ps1 | iex
+```
+
+### 🤔 Which Installation Method Should I Use?
+
+| Scenario | Recommended Method |
+|----------|-------------------|
+| First-time installation | Option 1: Standard (Regular PowerShell) |
+| Personal computer | Option 1: Standard (Regular PowerShell) |
+| Corporate/managed device | Option 2: Administrator |
+| Permission errors with Option 1 | Option 2: Administrator |
+| Updating existing installation | Option 1: Standard (Regular PowerShell) |
+
 ## 🗑️ Safe Uninstallation
 
-**Remove ONLY Federation MCPs** (preserves your other MCPs):
+Remove MCP Federation Core while preserving your personal MCPs:
 
-### Windows:
+### Windows
 ```powershell
-cd ~/mcp-servers/installers/unified
-./uninstall.bat selective
+irm https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/uninstaller.ps1 | iex
 ```
 
-### macOS/Linux:
+### macOS/Linux
 ```bash
-cd ~/mcp-servers/installers/unified
-./uninstall.sh selective
+curl -fsSL https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/uninstall.sh | bash
 ```
+
+**Note**: This performs a selective uninstall, removing only Federation MCPs while preserving any other MCPs you have configured.
+
+## ✅ Post-Installation
+
+After installation completes:
+
+1. **Restart Claude Desktop** to activate all MCPs
+2. **Verify installation**: Check for 15 Federation MCPs in Claude settings
+3. **Test functionality**: Try using `@expert-role-prompt` or `@sequential-thinking` in Claude
+
+## 📋 What Gets Installed
+
+The installer will:
+- ✅ Configure 15 Federation MCPs in Claude Desktop
+- ✅ Create unified database at `~/mcp-servers/mcp-unified.db`
+- ✅ Set up API configurations (you'll be prompted for API keys)
+- ✅ Initialize all MCP schemas and dependencies
+- ✅ Preserve any existing personal MCPs you have configured
+
+## 🔧 Troubleshooting
+
+### "Scripts are disabled on this system" Error
+```powershell
+# Run this first, then try installation again:
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+```
+
+### "Access denied" or Permission Errors
+- Try Option 2 (Administrator Installation) instead
+- Ensure antivirus isn't blocking the script
+
+### Some MCPs Not Appearing in Claude
+- Fully quit Claude Desktop (check system tray)
+- Restart Claude Desktop
+- Check the config file manually: `%APPDATA%\Claude\claude_desktop_config.json`
+
+### Database Initialization Errors
+- Delete `~/mcp-servers/mcp-unified.db` if it exists
+- Run the installer again
+
+For more help, see [Issues](https://github.com/justmy2satoshis/mcp-federation-core/issues)
 
 ## 🎯 What's New in v3.2
 
