@@ -1,28 +1,62 @@
-# 🚀 MCP Federation Core v3.2
+# 🚀 MCP Federation Core v3.2.2 FIXED
 
 **The Ultimate Model Context Protocol Federation System** - 15 Integrated MCPs with Unified Database
 
-[![Version](https://img.shields.io/badge/version-3.2-blue)](https://github.com/justmy2satoshis/mcp-federation-core)
+[![Version](https://img.shields.io/badge/version-3.2.2_FIXED-blue)](https://github.com/justmy2satoshis/mcp-federation-core)
 [![MCPs](https://img.shields.io/badge/MCPs-15-green)](https://github.com/justmy2satoshis/mcp-federation-core)
 [![License](https://img.shields.io/badge/license-MIT-purple)](LICENSE)
 
+## ⚠️ CRITICAL FIX NOTICE
+
+**The original installer (v3.2.1) does NOT actually configure MCPs!** It only prints success messages without doing the work. Use the fixed version below.
+
 ## ✨ Quick Installation
 
-### Windows Installation (Two-Step Process)
-Avoids antivirus blocking - Downloads first, then runs locally:
+### Windows Installation - FIXED VERSION
 
+**Step 1: Download the setup script**
 ```powershell
-# Step 1: Download setup script
 iwr -useb https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/setup.ps1 -OutFile setup.ps1
+```
 
-# Step 2: Run setup (this will download and run the installer)
+**Step 2: Run the setup script**
+```powershell
 .\setup.ps1
 ```
 
-**One-liner version:**
+> **Note**: These commands should be run SEPARATELY, not on the same line with semicolon.
+
+### Alternative: Direct Fixed Installer Download
+
+If you want to use the fixed installer directly:
+
 ```powershell
-iwr -useb https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/setup.ps1 -OutFile setup.ps1; .\setup.ps1
+# Download the FIXED installer
+iwr -useb https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/installer-fixed.ps1 -OutFile installer-fixed.ps1
+
+# Run the fixed installer
+.\installer-fixed.ps1
 ```
+
+### Verify Installation Actually Worked
+
+**IMPORTANT**: After installation, verify MCPs were actually configured:
+
+```powershell
+# Download verification script
+iwr -useb https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/verify-installation.ps1 -OutFile verify-installation.ps1
+
+# Run verification
+.\verify-installation.ps1
+```
+
+Expected output:
+- ✅ Configuration file exists
+- ✅ Valid JSON configuration
+- ✅ Found 15+ configured MCPs
+- ✅ All 15 Federation MCPs are configured
+
+If you see "❌ FAILED: No MCPs configured", the installer didn't work!
 
 ### macOS/Linux
 ```bash
@@ -36,33 +70,34 @@ If the above methods are blocked:
 # Clone repository
 git clone https://github.com/justmy2satoshis/mcp-federation-core.git
 cd mcp-federation-core
-.\installer.ps1
+
+# Use the FIXED installer
+.\installer-fixed.ps1
 ```
 
 ### Installation Options
 ```powershell
 # Skip Python package installation (if you have pip issues)
-.\installer.ps1 -SkipPython
+.\installer-fixed.ps1 -SkipPython
 
 # Skip Ollama installation
-.\installer.ps1 -SkipOllama
+.\installer-fixed.ps1 -SkipOllama
 
 # Force reinstall (overwrite existing)
-.\installer.ps1 -Force
+.\installer-fixed.ps1 -Force
 
-# Combine options as needed
-.\installer.ps1 -SkipPython -SkipOllama
+# Test without making changes
+.\installer-fixed.ps1 -WhatIf
 ```
 
-### 🤔 Which Installation Method Should I Use?
+## 🤔 Which Installation Method Should I Use?
 
 | Scenario | Recommended Method |
 |----------|-------------------|
-| First-time installation | Option 1: Standard (Regular PowerShell) |
-| Personal computer | Option 1: Standard (Regular PowerShell) |
-| Corporate/managed device | Option 2: Administrator |
-| Permission errors with Option 1 | Option 2: Administrator |
-| Updating existing installation | Option 1: Standard (Regular PowerShell) |
+| Fresh installation | Use installer-fixed.ps1 |
+| Existing failed installation | Use installer-fixed.ps1 -Force |
+| Want to verify first | Run verify-installation.ps1 |
+| Having issues | Check analysis-report.md for details |
 
 ## 🗑️ Safe Uninstallation
 
@@ -70,28 +105,29 @@ Remove MCP Federation Core while preserving your personal MCPs:
 
 ### Windows
 ```powershell
-irm https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/uninstaller.ps1 | iex
+cd ~/mcp-servers/installers/unified
+.\uninstall.bat selective
 ```
 
 ### macOS/Linux
 ```bash
-curl -fsSL https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/uninstall.sh | bash
+cd ~/mcp-servers/installers/unified
+./uninstall.sh selective
 ```
-
-**Note**: This performs a selective uninstall, removing only Federation MCPs while preserving any other MCPs you have configured.
 
 ## ✅ Post-Installation
 
 After installation completes:
 
-1. **Restart Claude Desktop** to activate all MCPs
-2. **Verify installation**: Check for 15 Federation MCPs in Claude settings
-3. **Test functionality**: Try using `@expert-role-prompt` or `@sequential-thinking` in Claude
+1. **Run verification script** to ensure MCPs are actually configured
+2. **Restart Claude Desktop** to activate all MCPs
+3. **Check Claude settings** for 15 Federation MCPs
+4. **Test functionality**: Try using `@expert-role-prompt` or `@sequential-thinking` in Claude
 
 ## 📋 What Gets Installed
 
 The installer will:
-- ✅ Configure 15 Federation MCPs in Claude Desktop
+- ✅ **ACTUALLY** Configure 15 Federation MCPs in Claude Desktop (fixed version)
 - ✅ Create unified database at `~/mcp-servers/mcp-unified.db`
 - ✅ Set up API configurations (you'll be prompted for API keys)
 - ✅ Initialize all MCP schemas and dependencies
@@ -99,13 +135,23 @@ The installer will:
 
 ## 🔧 Troubleshooting
 
+### MCPs Not Showing After Installation
+
+**Most likely cause**: You used installer.ps1 instead of installer-fixed.ps1
+
+1. Run `verify-installation.ps1` to check
+2. If it shows "No MCPs configured", run:
+   ```powershell
+   .\installer-fixed.ps1 -Force
+   ```
+
 ### Python Package Installation Errors (pip)
 **For Python 3.11+ users**: The installer automatically handles the `--break-system-packages` requirement.
 
 If you still see pip errors:
 ```powershell
 # Option 1: Skip Python packages during installation
-.\installer.ps1 -SkipPython
+.\installer-fixed.ps1 -SkipPython
 
 # Option 2: Install packages manually with the required flag
 python -m pip install mcp pydantic aiohttp numpy --break-system-packages
@@ -122,40 +168,24 @@ python -m pip install mcp pydantic aiohttp numpy --break-system-packages
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ```
 
-### "Access denied" or Permission Errors
-- Run PowerShell as Administrator
-- Ensure antivirus isn't blocking the script
+## 🎯 What's Fixed in v3.2.2
 
-### Some MCPs Not Appearing in Claude
-- Fully quit Claude Desktop (check system tray)
-- Restart Claude Desktop
-- Check the config file manually: `%APPDATA%\Claude\claude_desktop_config.json`
-
-### Database Initialization Errors
-- Delete `~/mcp-servers/mcp-unified.db` if it exists
-- Run the installer again
-
-For more help, see [Issues](https://github.com/justmy2satoshis/mcp-federation-core/issues)
-
-## 🎯 What's New in v3.2
-
-- ✅ **Fixed**: SQLite database path issues (no more SQLITE_NOTADB errors)
-- ✅ **Fixed**: Dynamic path resolution (no placeholders)
-- ✅ **New**: Safe selective uninstaller
-- ✅ **New**: Automatic database schema initialization
-- ✅ **New**: API key configuration wizard
-- ✅ **Improved**: Cross-platform compatibility
-- ✅ **Verified**: All 15 MCPs working together
+- ✅ **FIXED**: Installer now ACTUALLY configures MCPs (not just prints messages)
+- ✅ **FIXED**: Configuration is saved to claude_desktop_config.json
+- ✅ **FIXED**: Verification confirms MCPs are configured
+- ✅ **FIXED**: Accurate success/failure reporting
+- ✅ **FIXED**: Python 3.11+ compatibility with --break-system-packages
+- ✅ **FIXED**: NativeCommandError with python -m pip
 
 ## 📦 What You Get
 
-### 15 Production-Ready MCPs:
+### 15 Production-Ready MCPs (When Using Fixed Installer):
 1. **sqlite** - Unified database operations
 2. **expert-role-prompt** - 50 AI expert roles with reasoning
 3. **kimi-k2-resilient-enhanced** - Resilient data storage
 4. **kimi-k2-code-context-enhanced** - Code analysis with vector search
 5. **rag-context** - RAG-based context management
-6. **converse** - Multi-model AI consensus (Ollama auto-detect!)
+6. **converse** - Multi-model AI consensus
 7. **web-search** - Brave search integration
 8. **github-manager** - GitHub repository management
 9. **memory** - Knowledge graph storage
@@ -176,11 +206,8 @@ The installer will guide you through API key setup. You'll need:
 
 ### Optional (for enhanced features):
 - **OpenAI**: For GPT models
-- **Moonshot (Kimi)**: For Kimi K2 features
-- **xAI**: For Grok models
-- **Cohere**: For Cohere models
-- **OpenRouter**: For model routing
 - **GitHub**: For repository management
+- Other provider keys as needed
 
 ## 💻 System Requirements
 
@@ -195,55 +222,28 @@ The installer will guide you through API key setup. You'll need:
 - Storage: 1GB
 - Stable internet connection
 
-## 🛠️ Troubleshooting
-
-### Common Issues:
-
-**SQLITE_NOTADB Error**
-- ✅ Fixed in v3.2 - run uninstaller then reinstall
-
-**MCPs Not Showing in Claude**
-- Restart Claude Desktop after installation
-- Check `%APPDATA%\Claude\claude_desktop_config.json` has all 15 MCPs
-
-**Installation Fails**
-- Run PowerShell as Administrator
-- Ensure Node.js and Python are installed
-- Check firewall isn't blocking npm/pip
-
-**See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for detailed solutions**
-
 ## 🧪 Testing
 
 Verify your installation:
-```bash
-# Test database connectivity
-python ~/mcp-servers/installers/unified/test_installation.py
+```powershell
+# Run the verification script
+.\verify-installation.ps1
 
-# Test complete cycle
-python ~/mcp-servers/installers/unified/test_complete_cycle.py
+# Check configuration manually
+$config = Get-Content "$env:APPDATA\Claude\claude_desktop_config.json" | ConvertFrom-Json
+$config.mcpServers.PSObject.Properties.Name.Count  # Should be 15 or more
 ```
 
 ## 📚 Documentation
 
-- [Installation Guide](docs/INSTALLATION.md)
-- [Uninstaller Guide](installers/unified/UNINSTALLER_README.md)
-- [API Key Setup](docs/API_SETUP.md)
+- [Installation Analysis](analysis-report.md) - Why the original installer doesn't work
 - [Troubleshooting](TROUBLESHOOTING.md)
-- [Testing Guide](docs/TESTING.md)
 - [Contributing](CONTRIBUTING.md)
 - [Changelog](CHANGELOG.md)
 
-## 🚀 Quick Start
-
-1. **Install**: Run the one-liner above
-2. **Configure**: Enter API keys when prompted
-3. **Restart**: Close and reopen Claude Desktop
-4. **Test**: Try `@sqlite` or `@expert-role-prompt` in Claude
-
 ## 🤝 Contributing
 
-We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md)
+We welcome contributions! Please test your changes with verify-installation.ps1
 
 ## 📝 License
 
@@ -252,8 +252,8 @@ MIT License - see [LICENSE](LICENSE)
 ## 🌟 Support
 
 - **Issues**: [GitHub Issues](https://github.com/justmy2satoshis/mcp-federation-core/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/justmy2satoshis/mcp-federation-core/discussions)
+- **Critical Bug**: Original installer doesn't configure MCPs - use installer-fixed.ps1
 
 ---
 
-**Built with ❤️ for the Claude community**
+**Built with ❤️ for the Claude community - Now actually works!**
