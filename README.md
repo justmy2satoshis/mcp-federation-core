@@ -13,7 +13,7 @@ No administrator privileges required - just open PowerShell normally:
 
 #### Windows PowerShell (Regular User)
 ```powershell
-irm https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/installer-safe.ps1 | iex
+irm https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/installer.ps1 | iex
 ```
 
 #### macOS/Linux
