@@ -8,26 +8,35 @@
 
 ## ✨ Quick Installation
 
-### Option 1: Standard Installation (Recommended)
-No administrator privileges required - just open PowerShell normally:
+### Windows Installation (Two-Step Process)
+Avoids antivirus blocking - Downloads first, then runs locally:
 
-#### Windows PowerShell (Regular User)
 ```powershell
-irm https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/installer.ps1 | iex
+# Step 1: Download setup script
+iwr -useb https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/setup.ps1 -OutFile setup.ps1
+
+# Step 2: Run setup (this will download and run the installer)
+.\setup.ps1
 ```
 
-#### macOS/Linux
+**One-liner version:**
+```powershell
+iwr -useb https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/setup.ps1 -OutFile setup.ps1; .\setup.ps1
+```
+
+### macOS/Linux
 ```bash
 curl -fsSL https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/install.sh | bash
 ```
 
-### Option 2: Administrator Installation
-Only use this method if you encounter permission issues with the standard installation:
+### Alternative: Manual Installation
+If the above methods are blocked:
 
-#### Windows PowerShell (Run as Administrator)
 ```powershell
-# Right-click PowerShell and select 'Run as Administrator'
-irm https://raw.githubusercontent.com/justmy2satoshis/mcp-federation-core/main/installer-admin.ps1 | iex
+# Clone repository
+git clone https://github.com/justmy2satoshis/mcp-federation-core.git
+cd mcp-federation-core
+.\installer.ps1
 ```
 
 ### 🤔 Which Installation Method Should I Use?
@@ -75,6 +84,11 @@ The installer will:
 
 ## 🔧 Troubleshooting
 
+### "Malicious Content" or Antivirus Blocking
+- Use the two-step process above (downloads first, runs locally)
+- Or download setup.ps1 manually from GitHub and run locally
+- Add an exception for the mcp-federation-core folder in Windows Defender
+
 ### "Scripts are disabled on this system" Error
 ```powershell
 # Run this first, then try installation again:
@@ -82,7 +96,7 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ```
 
 ### "Access denied" or Permission Errors
-- Try Option 2 (Administrator Installation) instead
+- Run PowerShell as Administrator
 - Ensure antivirus isn't blocking the script
 
 ### Some MCPs Not Appearing in Claude
