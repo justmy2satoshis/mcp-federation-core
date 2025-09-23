@@ -16,12 +16,12 @@ If you still have issues:
 .\installer.ps1 -SkipPython
 
 # Option 2: Install manually with flag
-pip install mcp pydantic aiohttp numpy --break-system-packages
+python -m pip install mcp pydantic aiohttp numpy --break-system-packages
 
 # Option 3: Use a virtual environment (recommended for development)
 python -m venv mcp_env
 .\mcp_env\Scripts\Activate.ps1
-pip install mcp pydantic aiohttp numpy
+python -m pip install mcp pydantic aiohttp numpy
 ```
 
 ### 2. Antivirus / Windows Defender Blocking

@@ -292,15 +292,20 @@ if ($SkipPython) {
 
         # Try installation with appropriate flags
         $installed = $false
-        if ($needsBreakFlag) {
-            pip install -q $package --break-system-packages 2>$null
-            $installed = ($LASTEXITCODE -eq 0)
-        }
 
-        # Fallback to standard install if needed
-        if (-not $installed) {
-            pip install -q $package 2>$null
-            $installed = ($LASTEXITCODE -eq 0)
+        try {
+            if ($needsBreakFlag) {
+                # Use python -m pip for better Windows compatibility
+                $output = python -m pip install -q $package --break-system-packages 2>&1
+                $installed = ($LASTEXITCODE -eq 0)
+            } else {
+                # Standard install for older Python versions
+                $output = python -m pip install -q $package 2>&1
+                $installed = ($LASTEXITCODE -eq 0)
+            }
+        } catch {
+            # Silently handle any errors
+            $installed = $false
         }
 
         if ($installed) {

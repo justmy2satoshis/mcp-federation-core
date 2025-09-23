@@ -60,7 +60,7 @@ if (Test-Path $installerPath) {
         Write-Host "     .\installer.ps1 -SkipPython" -ForegroundColor Green
         Write-Host ""
         Write-Host "  2. Install Python packages manually:" -ForegroundColor White
-        Write-Host "     pip install mcp pydantic aiohttp numpy --break-system-packages" -ForegroundColor Green
+        Write-Host "     python -m pip install mcp pydantic aiohttp numpy --break-system-packages" -ForegroundColor Green
         Write-Host ""
         Write-Host "  3. Use a Python virtual environment" -ForegroundColor White
         Write-Host ""
