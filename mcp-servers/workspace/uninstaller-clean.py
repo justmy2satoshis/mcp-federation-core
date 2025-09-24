@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """
-MCP Federation Core v0.1.3 - SAFE Clean Uninstaller
+MCP Federation Core v0.1.4 - COMPLETE Clean Uninstaller
+COMPLETE REMOVAL: Now supports full removal of all installed files, directories, and artifacts
 PRESERVATION FIX: Uses installation manifest to only remove MCPs that were actually installed
 Protects pre-existing user MCPs with federation names from accidental removal
+THREE REMOVAL LEVELS: Config-only, data files, or complete removal
 """
 
 import json
@@ -216,6 +218,38 @@ class MCPUninstaller:
             print(f"  ❌ Error restoring backup: {e}")
             return False
 
+    def remove_installed_directories(self):
+        """COMPLETE REMOVAL - Remove ALL directories created by installation"""
+        print("\n🗑️  COMPLETE REMOVAL - Removing all installed directories...")
+
+        # Main directories to remove
+        directories_to_remove = [
+            self.base_dir,  # Entire mcp-servers directory and all contents
+            self.home / '.mcp-federation',  # Config/manifest directory if exists
+        ]
+
+        removed_count = 0
+        for directory in directories_to_remove:
+            if directory.exists():
+                try:
+                    # Count items before removal for reporting
+                    if directory.is_dir():
+                        item_count = sum(1 for _ in directory.rglob('*'))
+                        shutil.rmtree(directory)
+                        print(f"  ✅ Removed: {directory} ({item_count} items)")
+                        removed_count += 1
+                except Exception as e:
+                    print(f"  ⚠️  Could not remove {directory}: {e}")
+                    print(f"     Try manually: rmdir /s /q \"{directory}\"")
+            else:
+                print(f"  ℹ️  Not found: {directory}")
+
+        if removed_count > 0:
+            print(f"\n  ✅ COMPLETE REMOVAL: {removed_count} directories removed")
+            print(f"     All federation artifacts have been deleted")
+        else:
+            print(f"\n  ℹ️  No directories found to remove")
+
     def clean_federation_files(self):
         """Remove federation-specific files and directories"""
         print("\n🧹 Cleaning federation files...")
@@ -225,10 +259,15 @@ class MCPUninstaller:
             self.base_dir / "kimi-code.db",
             self.base_dir / "kimi-resilient.db",
             self.base_dir / "expert-role-prompt",
+            self.base_dir / "expert-role-prompt-mcp",
             self.base_dir / "converse",
+            self.base_dir / "converse-mcp-enhanced",
             self.base_dir / "rag-context",
+            self.base_dir / "rag-context-mcp",
             self.base_dir / "kimi-k2-code-context-enhanced",
             self.base_dir / "kimi-k2-resilient-enhanced",
+            self.base_dir / "kimi-k2-code-context-mcp-repo",
+            self.base_dir / "kimi-k2-heavy-processor-mcp-repo",
             self.base_dir / "federation-wrappers",
             self.manifest_path  # Clean up the installation manifest too
         ]
@@ -250,8 +289,9 @@ class MCPUninstaller:
     def uninstall(self, mode='selective'):
         """SAFE uninstallation process with manifest-based preservation"""
         print("\n" + "="*70)
-        print(" MCP FEDERATION CORE v0.1.3 - SAFE CLEAN UNINSTALLER")
+        print(" MCP FEDERATION CORE v0.1.4 - COMPLETE CLEAN UNINSTALLER")
         print(" PRESERVATION FIX: Protects Pre-Existing User MCPs")
+        print(" COMPLETE REMOVAL: Removes ALL Installed Files & Directories")
         print("="*70)
 
         if mode == 'restore':
@@ -265,19 +305,45 @@ class MCPUninstaller:
             # Selective removal (default)
             self.remove_federation_mcps()
 
-        # Clean federation files
-        clean_files = input("\n❓ Remove federation data files? (y/n): ").lower() == 'y'
-        if clean_files:
+        # Ask about complete removal of ALL federation artifacts
+        print("\n" + "="*50)
+        print(" COMPLETE REMOVAL OPTIONS")
+        print("="*50)
+        print("\n Choose removal level:")
+        print("  1. Keep installed files (only removed from config)")
+        print("  2. Remove data files only (databases, caches)")
+        print("  3. COMPLETE REMOVAL (all files, directories, artifacts)")
+
+        choice = input("\n Select option (1-3): ").strip()
+
+        if choice == '2':
             self.clean_federation_files()
+        elif choice == '3':
+            print("\n⚠️  WARNING: This will remove:")
+            print("  - ~/mcp-servers directory and ALL contents")
+            print("  - All installed MCP files")
+            print("  - All databases and configuration")
+            print("  - Installation manifests and backups")
+
+            confirm = input("\n Are you SURE? Type 'yes' to confirm: ").strip().lower()
+            if confirm == 'yes':
+                self.clean_federation_files()
+                self.remove_installed_directories()
+            else:
+                print("  Skipping complete removal")
 
         print("\n" + "="*70)
-        print(" ✅ SAFE UNINSTALLATION COMPLETE")
+        print(" ✅ UNINSTALLATION COMPLETE")
         print("="*70)
         print("\n📋 Next Steps:")
         print("  1. Restart Claude Desktop")
-        print("  2. Pre-existing MCPs with federation names are PRESERVED")
-        print("  3. Only newly installed federation MCPs were removed")
-        print("  4. Installation manifest was used to ensure safe removal")
+        if choice == '3' and confirm == 'yes':
+            print("  2. ALL federation files and directories have been removed")
+            print("  3. Your system is completely clean of federation artifacts")
+        else:
+            print("  2. Pre-existing MCPs with federation names are PRESERVED")
+            print("  3. Only newly installed federation MCPs were removed from config")
+            print("  4. Installation manifest was used to ensure safe removal")
 
         return True
 
