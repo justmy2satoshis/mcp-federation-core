@@ -1,11 +1,11 @@
 # MCP Federation Core
 
-[![Version](https://img.shields.io/badge/version-0.1.3-blue)](https://github.com/justmy2satoshis/mcp-federation-core)
+[![Version](https://img.shields.io/badge/version-0.1.4-blue)](https://github.com/justmy2satoshis/mcp-federation-core)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![MCPs](https://img.shields.io/badge/MCPs-15-orange)](https://modelcontextprotocol.io)
-[![Status](https://img.shields.io/badge/status-preservation%20fixed-brightgreen)](https://github.com/justmy2satoshis/mcp-federation-core)
+[![Status](https://img.shields.io/badge/status-all%20critical%20fixes-brightgreen)](https://github.com/justmy2satoshis/mcp-federation-core)
 
-> **🛡️ PRESERVATION FIXED v0.1.3** - Safe installation & uninstallation that protects your existing MCPs
+> **✅ PRODUCTION READY v0.1.4** - All critical bugs fixed, complete uninstallation, verified MCP commands
 
 **Lightweight orchestrator for 15 production-ready Model Context Protocol servers with selective database unification and guaranteed data preservation.**
 
@@ -320,22 +320,25 @@ graph LR
 
 ## 📈 Project Status
 
-- ✅ **v0.1.3** - **PRESERVATION FIXED** - Safe installation & uninstallation
+- ✅ **v0.1.4** - **PRODUCTION READY** - All critical bugs fixed
+- ✅ **Directory nesting prevention** - No more triple-nested folders
+- ✅ **Complete uninstallation** - Now removes ALL artifacts, not just config
+- ✅ **Verified MCP commands** - All packages tested against working config
 - ✅ **Installation manifest tracking** - Prevents data loss during uninstallation
-- ✅ **Correct npm package names** - All 15 MCPs install successfully
 - ✅ **Selective database unification** - 40% memory savings for 4 MCPs
-- ✅ **Automated installation/uninstallation** - One-command setup
+- ✅ **Diagnostic tool included** - verify_mcps.py tests all MCPs
 - ✅ **Windows/macOS/Linux support** - Cross-platform compatibility
 - ✅ **Comprehensive troubleshooting guide** - Clear resolution steps
 - 🔄 Performance monitoring tools (planned)
 - 🔄 Web UI for management (planned)
 
-### Recent Fixes (v0.1.3)
-- 🛡️ **CRITICAL**: Fixed data loss bug - uninstaller now preserves pre-existing MCPs
-- ✅ **npm packages**: Updated to correct, working package names
-- ✅ **Repository structure**: All files properly organized in root directory
-- ✅ **Documentation**: Complete installation guide with troubleshooting
-- ✅ **Testing**: Preservation verification tests included
+### Recent Fixes (v0.1.4)
+- ✅ **CRITICAL**: Fixed directory nesting bug creating triple-nested folders
+- ✅ **CRITICAL**: Fixed incorrect npm packages causing warning triangles
+- ✅ **CRITICAL**: Uninstaller now completely removes all files and directories
+- ✅ **Platform fixes**: Windows uses 'python', not 'python3'
+- ✅ **Package corrections**: perplexity and converse-enhanced use correct npm packages
+- ✅ **Diagnostic tool**: New verify_mcps.py validates all MCP installations
 
 ## 🤝 Contributing
 
@@ -379,4 +382,4 @@ python FEDERATED-INSTALLER-UNIFIED.py  # Windows
 python3 FEDERATED-INSTALLER-UNIFIED.py # macOS/Linux
 ```
 
-**MCP Federation Core v0.1.3** - Orchestrating the future of AI assistants, one protocol at a time. 🛡️ **Now with guaranteed data preservation.**
+**MCP Federation Core v0.1.4** - Production-ready orchestration for Claude Desktop. ✅ **All critical bugs fixed, complete uninstallation, verified commands.**

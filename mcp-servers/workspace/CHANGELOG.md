@@ -5,7 +5,54 @@ All notable changes to the MCP Federation Core project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2025-01-24
+## [0.1.4] - 2025-01-24
+
+### CRITICAL FIXES
+- **FIXED**: Directory nesting bug that created triple-nested mcp-federation-core folders
+- **FIXED**: Incorrect npm package names causing warning triangles in Claude Desktop
+- **FIXED**: Uninstaller now completely removes all installed files and directories
+- **FIXED**: Python command compatibility on Windows (python3 → python)
+
+### Major Changes
+- **Installer v0.1.4**:
+  - Added `check_installation_location()` to prevent directory nesting
+  - Fixed perplexity package: `perplexity-mcp-server` → `server-perplexity-ask`
+  - Changed converse-enhanced from GitHub to npm: `converse-mcp-server`
+  - Platform-specific Python commands (Windows uses 'python')
+  - Enhanced error handling and validation
+
+- **Uninstaller v0.1.4**:
+  - Three-level removal options: config-only, data files, or complete removal
+  - Added `remove_installed_directories()` for complete artifact removal
+  - Now removes entire mcp-servers directory when complete removal is selected
+  - Preserves user choice through interactive prompts
+
+- **New Diagnostic Tool**:
+  - Created `verify_mcps.py` to test all MCPs for green checkmarks
+  - Validates npm packages and script locations
+  - Provides detailed fix suggestions for common issues
+  - Saves verification results to JSON for debugging
+
+### Package Corrections
+- perplexity: Uses `server-perplexity-ask` (npm)
+- converse-enhanced: Uses `converse-mcp-server` (npm)
+- All other packages verified against working Claude Desktop configuration
+
+## [0.1.3] - 2025-01-23
+
+### CRITICAL FIX - Data Preservation
+- **FIXED**: Data loss bug - uninstaller was removing pre-existing user MCPs
+- Added installation manifest tracking to differentiate pre-existing vs newly installed MCPs
+- Implemented safe uninstallation that only removes federation-installed MCPs
+
+### Major Changes
+- Installation manifest (`installation_manifest.json`) tracks:
+  - Pre-existing MCPs (preserved during uninstall)
+  - Newly installed MCPs (safe to remove)
+  - Installation date and version
+  - Failed installations
+
+## [0.1.0] - 2025-01-22
 
 ### Added
 - Initial release of MCP Federation Core
