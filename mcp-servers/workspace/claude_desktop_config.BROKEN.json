@@ -1,0 +1,89 @@
+{
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "env": {
+        "MCP_DATABASE": "C:\\Users\\User\\mcp-servers\\mcp-unified.db",
+        "DATABASE_URL": "sqlite:///C:\\Users\\User\\mcp-servers\\mcp-unified.db",
+        "SQLITE_PATH": "C:\\Users\\User\\mcp-servers\\mcp-unified.db",
+        "MCP_UNIFIED": "true",
+        "MCP_NAMESPACE": "memory"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\Users\\User"
+      ]
+    },
+    "github-manager": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_TOKEN": "YOUR_GITHUB_TOKEN"
+      }
+    },
+    "web-search": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-brave-search"
+      ],
+      "env": {
+        "BRAVE_API_KEY": "YOUR_BRAVE_API_KEY"
+      }
+    },
+    "perplexity": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "perplexity-mcp-server"
+      ],
+      "env": {
+        "PERPLEXITY_API_KEY": "YOUR_PERPLEXITY_KEY"
+      }
+    },
+    "expert-role-prompt": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\User\\mcp-servers\\expert-role-prompt-mcp\\index.js"
+      ]
+    },
+    "converse-enhanced": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\User\\mcp-servers\\converse-mcp-enhanced\\index.js"
+      ]
+    },
+    "kimi-k2-code-context": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "C:\\Users\\User\\mcp-servers\\federation-wrappers\\kimi-k2-code-context-wrapper.bat"
+      ],
+      "env": {
+        "MCP_DATABASE": "C:\\Users\\User\\mcp-servers\\mcp-unified.db",
+        "DATABASE_URL": "sqlite:///C:\\Users\\User\\mcp-servers\\mcp-unified.db",
+        "SQLITE_PATH": "C:\\Users\\User\\mcp-servers\\mcp-unified.db",
+        "MCP_UNIFIED": "true",
+        "MCP_NAMESPACE": "kimi-k2-code-context"
+      }
+    }
+  }
+}
