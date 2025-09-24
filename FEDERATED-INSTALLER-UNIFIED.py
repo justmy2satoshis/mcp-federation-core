@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 """
-MCP Federation Core v0.1.2 - SAFE Federated Installer with Configuration Protection
+MCP Federation Core v0.1.4 - Complete Fix for Directory Nesting & MCP Errors
 Copyright (c) 2025 justmy2satoshis
 Licensed under MIT License
 
-CRITICAL UPDATE v0.1.2 - Fixed all MCP installation failures:
+CRITICAL UPDATE v0.1.4 - Fixed directory nesting and MCP command errors:
+- DIRECTORY FIX: Prevents triple-nested directory creation bug
+- MCP COMMANDS: Updated to match working Claude Desktop configuration
+- COMPLETE UNINSTALL: Now removes ALL installed files and directories
+- PYTHON COMMAND: Uses 'python' on Windows (not python3)
+
+PREVIOUS FIXES v0.1.3 - Fixed data loss bug in uninstaller:
 - NEVER overwrites existing MCP configurations
 - Creates multiple backups before any changes
 - Merges new federation MCPs with existing user MCPs
@@ -60,6 +66,50 @@ class FederatedUnifiedInstaller:
         # Track installation
         self.installed_mcps = []
         self.failed_mcps = []
+
+        # Installation manifest for safe uninstallation
+        self.manifest_path = self.base_dir / "installation_manifest.json"
+
+    def check_installation_location(self):
+        """Prevent nested directory creation bug"""
+        current_dir = Path.cwd()
+
+        # Check if we're already in mcp-federation-core
+        if current_dir.name == 'mcp-federation-core':
+            print("\n" + "="*70)
+            print(" ⚠️  DIRECTORY WARNING - Already in mcp-federation-core")
+            print("="*70)
+            print("\n❌ Do NOT clone again - this would create nested directories")
+            print("✅ You're in the right place - run the installer directly:")
+            print(f"   {'python' if self.is_windows else 'python3'} FEDERATED-INSTALLER-UNIFIED.py")
+            print("")
+            return True  # OK to proceed with installation
+
+        # Check if mcp-federation-core exists as subdirectory
+        if (current_dir / 'mcp-federation-core').exists():
+            print("\n" + "="*70)
+            print(" 📁 Found existing mcp-federation-core directory")
+            print("="*70)
+            print("\nChange to that directory first:")
+            print("   cd mcp-federation-core")
+            print(f"   {'python' if self.is_windows else 'python3'} FEDERATED-INSTALLER-UNIFIED.py")
+            print("")
+            return False  # Don't proceed
+
+        # Check for nested structure (already in nested directory)
+        if 'mcp-federation-core' in str(current_dir) and current_dir.parent.name == 'mcp-federation-core':
+            print("\n" + "="*70)
+            print(" ⚠️  NESTED DIRECTORY DETECTED")
+            print("="*70)
+            print(f"\nYou appear to be in a nested directory structure:")
+            print(f"   {current_dir}")
+            print("\nNavigate to the root mcp-federation-core directory:")
+            print("   cd ../..")
+            print(f"   {'python' if self.is_windows else 'python3'} FEDERATED-INSTALLER-UNIFIED.py")
+            print("")
+            return False  # Don't proceed
+
+        return True  # OK to proceed
 
     def _get_config_path(self):
         """Get Claude Desktop config path"""
@@ -242,12 +292,12 @@ export MCP_UNIFIED="true"
             },
             'perplexity': {
                 'type': 'npm',
-                'source': 'perplexity-mcp-server',
-                'install': ['npm', 'install', '-g', 'perplexity-mcp-server'],
+                'source': 'server-perplexity-ask',
+                'install': ['npm', 'install', '-g', 'server-perplexity-ask'],
                 'needs_db': False,
                 'config': {
                     'command': 'npx',
-                    'args': ['-y', 'perplexity-mcp-server'],
+                    'args': ['-y', 'server-perplexity-ask'],
                     'env': {'PERPLEXITY_API_KEY': 'YOUR_PERPLEXITY_KEY'}
                 }
             },
@@ -266,15 +316,17 @@ export MCP_UNIFIED="true"
                 }
             },
             'converse-enhanced': {
-                'type': 'github',
-                'source': 'https://github.com/justmy2satoshis/converse-mcp-enhanced-repo.git',
-                'directory': 'converse-enhanced',
-                'branch': 'main',
-                'install': ['npm', 'install'],
+                'type': 'npm',
+                'source': 'converse-mcp-server',
+                'install': ['npm', 'install', '-g', 'converse-mcp-server'],
                 'needs_db': False,
                 'config': {
-                    'command': 'node',
-                    'args': [str(self.base_dir / 'converse-enhanced' / 'server.js')]
+                    'command': 'npx',
+                    'args': ['-y', 'converse-mcp-server'],
+                    'env': {
+                        'OPENAI_API_KEY': 'YOUR_OPENAI_KEY',
+                        'GEMINI_API_KEY': 'YOUR_GEMINI_KEY'
+                    }
                 }
             },
             'kimi-k2-code-context': {
@@ -285,7 +337,7 @@ export MCP_UNIFIED="true"
                 'install': [],  # Python server - no npm install needed
                 'needs_db': True,  # UNIFIED with wrapper
                 'config': {
-                    'command': 'python3',
+                    'command': 'python' if self.is_windows else 'python3',
                     'args': [str(self.base_dir / 'kimi-k2-code-context-enhanced' / 'server.py')]
                 }
             },
@@ -297,7 +349,7 @@ export MCP_UNIFIED="true"
                 'install': [],  # Python server - no npm install needed
                 'needs_db': True,  # UNIFIED with wrapper
                 'config': {
-                    'command': 'python3',
+                    'command': 'python' if self.is_windows else 'python3',
                     'args': [str(self.base_dir / 'kimi-k2-resilient-enhanced' / 'server.py')]
                 }
             },
@@ -496,6 +548,68 @@ export MCP_UNIFIED="true"
             print(f"  ⚠️ Starting with empty configuration")
             return {'mcpServers': {}}
 
+    def create_installation_manifest(self, existing_config):
+        """Create manifest tracking pre-existing vs newly installed MCPs"""
+        print("\n📋 Creating installation manifest...")
+
+        matrix = self.get_mcp_source_matrix()
+        federation_mcps = set(matrix.keys())
+
+        # Identify pre-existing MCPs
+        pre_existing_mcps = []
+        existing_mcps = existing_config.get('mcpServers', {})
+
+        for name in existing_mcps.keys():
+            if name in federation_mcps:
+                pre_existing_mcps.append(name)
+
+        # Create manifest
+        manifest = {
+            'installation_date': datetime.now().isoformat(),
+            'installer_version': '0.1.4',
+            'pre_existing_mcps': pre_existing_mcps,
+            'newly_installed_mcps': [],  # Will be populated during installation
+            'failed_mcps': []
+        }
+
+        if pre_existing_mcps:
+            print(f"  ✅ Detected {len(pre_existing_mcps)} pre-existing federation MCPs:")
+            for name in pre_existing_mcps:
+                print(f"    • {name} (will be preserved)")
+
+        return manifest
+
+    def save_installation_manifest(self, manifest):
+        """Save installation manifest to disk"""
+        try:
+            with open(self.manifest_path, 'w', encoding='utf-8') as f:
+                json.dump(manifest, f, indent=2)
+            print(f"  ✅ Manifest saved: {self.manifest_path}")
+            return True
+        except Exception as e:
+            print(f"  ⚠️ Failed to save manifest: {e}")
+            return False
+
+    def update_manifest_with_results(self, manifest):
+        """Update manifest with installation results"""
+        manifest['newly_installed_mcps'] = self.installed_mcps.copy()
+        manifest['failed_mcps'] = self.failed_mcps.copy()
+
+        # Remove pre-existing MCPs from newly_installed list if they exist
+        newly_installed = []
+        for mcp in self.installed_mcps:
+            if mcp not in manifest['pre_existing_mcps']:
+                newly_installed.append(mcp)
+
+        manifest['newly_installed_mcps'] = newly_installed
+
+        print(f"\n📋 Manifest summary:")
+        print(f"  • Pre-existing MCPs: {len(manifest['pre_existing_mcps'])}")
+        print(f"  • Newly installed MCPs: {len(manifest['newly_installed_mcps'])}")
+        print(f"  • Failed MCPs: {len(manifest['failed_mcps'])}")
+
+        return manifest
+
     def merge_configurations(self, existing_config, new_mcps):
         """Merge new federation MCPs with existing user MCPs"""
         print("\n🔄 Merging configurations...")
@@ -627,14 +741,23 @@ export MCP_UNIFIED="true"
         # Step 2: Load existing configuration
         existing_config = self.load_existing_config()
 
-        # Step 3: Merge configurations
+        # Step 3: Create installation manifest for safe uninstallation
+        manifest = self.create_installation_manifest(existing_config)
+
+        # Step 4: Merge configurations
         merged_config = self.merge_configurations(existing_config, self.installed_mcps)
 
-        # Step 4: Get user confirmation
+        # Step 5: Get user confirmation
         if not self.confirm_changes(existing_config, merged_config):
             return False
 
-        # Step 5: Write configuration safely
+        # Step 6: Update manifest with installation results
+        manifest = self.update_manifest_with_results(manifest)
+
+        # Step 7: Save manifest for safe uninstallation
+        self.save_installation_manifest(manifest)
+
+        # Step 8: Write configuration safely
         self.config_path.parent.mkdir(parents=True, exist_ok=True)
         return self.write_configuration_safely(merged_config)
 
@@ -643,6 +766,11 @@ export MCP_UNIFIED="true"
         print("\n" + "="*70)
         print(" MCP FEDERATION - UNIFIED DATABASE ARCHITECTURE")
         print("="*70)
+
+        # Check for directory nesting issues first
+        if not self.check_installation_location():
+            print("\n❌ Installation aborted to prevent directory issues")
+            return False
 
         # Create directories
         self.base_dir.mkdir(parents=True, exist_ok=True)
@@ -693,9 +821,11 @@ export MCP_UNIFIED="true"
 def main():
     # Display version header
     print("="*70)
-    print(" MCP Federation Core v0.1.2 - FIXED INSTALLER")
+    print(" MCP Federation Core v0.1.4 - COMPLETE FIX INSTALLER")
     print(" Lightweight Orchestrator for 15 Production-Ready MCPs")
-    print(" ✅ FIXED: All 6 MCP installation failures resolved")
+    print(" ✅ FIXED: Directory nesting bug prevention")
+    print(" ✅ FIXED: MCP commands match working configuration")
+    print(" ✅ FIXED: Complete uninstallation of all artifacts")
     print(" ✅ SAFE Configuration Merging - Preserves User MCPs")
     print("="*70)
     print()
