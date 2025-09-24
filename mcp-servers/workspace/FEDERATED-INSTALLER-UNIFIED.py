@@ -1,10 +1,22 @@
 #!/usr/bin/env python3
 """
-MCP Federation Core v0.1.4 - Complete Fix for Directory Nesting & MCP Errors
+MCP Federation Core v0.1.7 - Added RAG-Anything as 16th MCP with complete documentation
 Copyright (c) 2025 justmy2satoshis
 Licensed under MIT License
 
-CRITICAL UPDATE v0.1.4 - Fixed directory nesting and MCP command errors:
+NEW IN v0.1.7 - RAG-Anything Integration:
+- Added RAG-Anything as the 16th Federated MCP
+- Multimodal document processing with knowledge graphs
+- Complete GitHub source links for all 16 MCPs in documentation
+
+CRITICAL UPDATE v0.1.6 - Fixed converse-enhanced installation:
+- converse-enhanced now installs dependencies directly (httpx, python-dotenv)
+- Bypasses missing requirements.txt in repository
+
+PREVIOUS UPDATE v0.1.5 - Fixed converse-enhanced to use Python server:
+- converse-enhanced now correctly uses Python server.py instead of npm package
+
+PREVIOUS UPDATE v0.1.4 - Fixed directory nesting and MCP command errors:
 - DIRECTORY FIX: Prevents triple-nested directory creation bug
 - MCP COMMANDS: Updated to match working Claude Desktop configuration
 - COMPLETE UNINSTALL: Now removes ALL installed files and directories
@@ -316,13 +328,15 @@ export MCP_UNIFIED="true"
                 }
             },
             'converse-enhanced': {
-                'type': 'npm',
-                'source': 'converse-mcp-server',
-                'install': ['npm', 'install', '-g', 'converse-mcp-server'],
+                'type': 'github',
+                'source': 'https://github.com/justmy2satoshis/converse-mcp-enhanced.git',
+                'directory': 'converse-mcp-enhanced',
+                'branch': 'main',
+                'install': ['pip', 'install', 'httpx', 'python-dotenv'],
                 'needs_db': False,
                 'config': {
-                    'command': 'npx',
-                    'args': ['-y', 'converse-mcp-server'],
+                    'command': 'python',
+                    'args': [str(self.base_dir / 'converse-mcp-enhanced' / 'src' / 'server.py')],
                     'env': {
                         'OPENAI_API_KEY': 'YOUR_OPENAI_KEY',
                         'GEMINI_API_KEY': 'YOUR_GEMINI_KEY'
@@ -362,6 +376,23 @@ export MCP_UNIFIED="true"
                     'command': 'npx',
                     'args': ['-y', '@notbnull/mcp-rag-context'],
                     'timeout': 120000
+                }
+            },
+            'rag-anything': {
+                'type': 'github',
+                'source': 'https://github.com/justmy2satoshis/rag-anything-mcp.git',
+                'directory': 'rag-anything-mcp',
+                'branch': 'main',
+                'install': ['npm', 'install'],
+                'needs_db': False,  # Uses its own database system
+                'config': {
+                    'command': 'node',
+                    'args': [str(self.base_dir / 'rag-anything-mcp' / 'dist' / 'index.js')],
+                    'env': {
+                        'RAG_LLM_PROVIDER': 'openai',
+                        'RAG_MODEL_NAME': 'gpt-4',
+                        'RAG_EMBED_MODEL': 'text-embedding-3-small'
+                    }
                 }
             }
         }
@@ -764,7 +795,8 @@ export MCP_UNIFIED="true"
     def install(self):
         """Main installation process"""
         print("\n" + "="*70)
-        print(" MCP FEDERATION - UNIFIED DATABASE ARCHITECTURE")
+        print(" MCP FEDERATION CORE v0.1.6 - UNIFIED INSTALLER")
+        print(" All 15 MCPs Working - converse-enhanced Dependencies Fixed")
         print("="*70)
 
         # Check for directory nesting issues first
