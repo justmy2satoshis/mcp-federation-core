@@ -539,14 +539,25 @@ if (-not $WhatIf) {
     Write-Host "  Saving configuration..." -ForegroundColor Yellow
 
     try {
-        $jsonContent = $config | ConvertTo-Json -Depth 10
-        $jsonContent | Set-Content -Path $configPath -Encoding UTF8 -Force
+        # Generate clean JSON without BOM
+        $jsonContent = $config | ConvertTo-Json -Depth 10 -Compress
+
+        # Save with UTF8 without BOM to prevent Claude Desktop parsing issues
+        [System.IO.File]::WriteAllText($configPath, $jsonContent, [System.Text.UTF8Encoding]::new($false))
+
         Write-Host "  Configuration saved successfully!" -ForegroundColor Green
 
-        # Verify
+        # Verify JSON is valid and readable
         $verification = Get-Content $configPath -Raw | ConvertFrom-Json
         $verifiedCount = @($verification.mcpServers.PSObject.Properties.Name).Count
         Write-Host "  Verified: $verifiedCount MCPs configured" -ForegroundColor Green
+
+        # Additional Claude Desktop compatibility check
+        if ($verification.mcpServers -and $verifiedCount -gt 0) {
+            Write-Host "  JSON format validated for Claude Desktop compatibility" -ForegroundColor Green
+        } else {
+            throw "Configuration validation failed - no MCPs found"
+        }
     }
     catch {
         Write-Host "  ERROR: Failed to save configuration: $_" -ForegroundColor Red
