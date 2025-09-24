@@ -1,0 +1,40 @@
+{
+  "name": "mcp-federation-core",
+  "version": "0.1.0",
+  "description": "Lightweight orchestrator for 15 production-ready Model Context Protocol servers",
+  "main": "FEDERATED-INSTALLER-UNIFIED.py",
+  "scripts": {
+    "install": "python FEDERATED-INSTALLER-UNIFIED.py",
+    "uninstall": "python uninstaller.py",
+    "test": "python -m pytest tests/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justmy2satoshis/mcp-federation-core.git"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "claude",
+    "federation",
+    "orchestrator",
+    "ai",
+    "llm"
+  ],
+  "author": "justmy2satoshis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/justmy2satoshis/mcp-federation-core/issues"
+  },
+  "homepage": "https://github.com/justmy2satoshis/mcp-federation-core#readme",
+  "engines": {
+    "python": ">=3.8",
+    "node": ">=18.0.0"
+  },
+  "architecture": {
+    "type": "lightweight-orchestrator",
+    "pattern": "federation",
+    "mcps": 15,
+    "database": "selective-unification"
+  }
+}
