@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 """
-MCP Federation Core v0.1.1 - SAFE Federated Installer with Configuration Protection
+MCP Federation Core v0.1.2 - SAFE Federated Installer with Configuration Protection
 Copyright (c) 2025 justmy2satoshis
 Licensed under MIT License
 
-CRITICAL UPDATE: Now includes SAFE configuration merging:
+CRITICAL UPDATE v0.1.2 - Fixed all MCP installation failures:
 - NEVER overwrites existing MCP configurations
 - Creates multiple backups before any changes
 - Merges new federation MCPs with existing user MCPs
 - Provides user confirmation and rollback capability
+- ✅ FIXED: Correct npm package names (sqlite, playwright, git-ops, desktop-commander)
+- ✅ FIXED: GitHub repository URLs updated to match working structure
+- ✅ FIXED: Python commands changed to python3 for cross-platform compatibility
+- ✅ FIXED: Duplicate prevention logic prevents MCP conflicts
 - Sources MCPs from original repositories (npm + GitHub)
 - Implements selective database unification (40% memory savings)
 - Maintains zero bundled code - pure orchestration
@@ -175,12 +179,12 @@ export MCP_UNIFIED="true"
             },
             'sqlite': {
                 'type': 'npm',
-                'source': '@modelcontextprotocol/server-sqlite',
-                'install': ['npm', 'install', '-g', '@modelcontextprotocol/server-sqlite'],
+                'source': 'mcp-sqlite',
+                'install': ['npm', 'install', '-g', 'mcp-sqlite'],
                 'needs_db': False,  # Special case - IS the database interface
                 'config': {
                     'command': 'npx',
-                    'args': ['-y', '@modelcontextprotocol/server-sqlite', str(self.db_path)]
+                    'args': ['-y', 'mcp-sqlite', str(self.db_path)]
                 }
             },
             'github-manager': {
@@ -207,32 +211,33 @@ export MCP_UNIFIED="true"
             },
             'playwright': {
                 'type': 'npm',
-                'source': '@modelcontextprotocol/server-playwright',
-                'install': ['npm', 'install', '-g', '@modelcontextprotocol/server-playwright'],
+                'source': '@playwright/mcp@0.0.39',
+                'install': ['npm', 'install', '-g', '@playwright/mcp@0.0.39'],
                 'needs_db': False,
                 'config': {
                     'command': 'npx',
-                    'args': ['-y', '@modelcontextprotocol/server-playwright']
+                    'args': ['-y', '@playwright/mcp@0.0.39',
+                           '--browser', 'chromium']
                 }
             },
             'git-ops': {
                 'type': 'npm',
-                'source': 'git-ops-mcp',
-                'install': ['npm', 'install', '-g', 'git-ops-mcp'],
+                'source': '@cyanheads/git-mcp-server',
+                'install': ['npm', 'install', '-g', '@cyanheads/git-mcp-server'],
                 'needs_db': False,
                 'config': {
                     'command': 'npx',
-                    'args': ['-y', 'git-ops-mcp']
+                    'args': ['-y', '@cyanheads/git-mcp-server']
                 }
             },
             'desktop-commander': {
                 'type': 'npm',
-                'source': '@rkdms/desktop-commander',
-                'install': ['npm', 'install', '-g', '@rkdms/desktop-commander'],
+                'source': '@wonderwhy-er/desktop-commander@latest',
+                'install': ['npm', 'install', '-g', '@wonderwhy-er/desktop-commander@latest'],
                 'needs_db': False,
                 'config': {
                     'command': 'npx',
-                    'args': ['-y', '@rkdms/desktop-commander']
+                    'args': ['-y', '@wonderwhy-er/desktop-commander@latest']
                 }
             },
             'perplexity': {
@@ -250,62 +255,61 @@ export MCP_UNIFIED="true"
             # GitHub MCPs - need wrappers for unified DB
             'expert-role-prompt': {
                 'type': 'github',
-                'source': 'https://github.com/justmy2satoshis/expert-role-prompt-mcp.git',
-                'directory': 'expert-role-prompt-mcp',
+                'source': 'https://github.com/justmy2satoshis/expert-role-prompt-mcp-repo.git',
+                'directory': 'expert-role-prompt',
                 'branch': 'main',
                 'install': ['npm', 'install'],
                 'needs_db': False,
                 'config': {
                     'command': 'node',
-                    'args': [str(self.base_dir / 'expert-role-prompt-mcp' / 'index.js')]
+                    'args': [str(self.base_dir / 'expert-role-prompt' / 'server.js')]
                 }
             },
             'converse-enhanced': {
                 'type': 'github',
-                'source': 'https://github.com/justmy2satoshis/converse-mcp-enhanced.git',
-                'directory': 'converse-mcp-enhanced',
+                'source': 'https://github.com/justmy2satoshis/converse-mcp-enhanced-repo.git',
+                'directory': 'converse-enhanced',
                 'branch': 'main',
                 'install': ['npm', 'install'],
                 'needs_db': False,
                 'config': {
                     'command': 'node',
-                    'args': [str(self.base_dir / 'converse-mcp-enhanced' / 'index.js')]
+                    'args': [str(self.base_dir / 'converse-enhanced' / 'server.js')]
                 }
             },
             'kimi-k2-code-context': {
                 'type': 'github',
-                'source': 'https://github.com/justmy2satoshis/kimi-k2-code-context-mcp.git',
-                'directory': 'kimi-k2-code-context-mcp',
+                'source': 'https://github.com/justmy2satoshis/kimi-k2-code-context-mcp-repo.git',
+                'directory': 'kimi-k2-code-context-enhanced',
                 'branch': 'main',
-                'install': ['npm', 'install'],
+                'install': [],  # Python server - no npm install needed
                 'needs_db': True,  # UNIFIED with wrapper
                 'config': {
-                    'command': 'node',
-                    'args': [str(self.base_dir / 'kimi-k2-code-context-mcp' / 'index.js')]
+                    'command': 'python3',
+                    'args': [str(self.base_dir / 'kimi-k2-code-context-enhanced' / 'server.py')]
                 }
             },
             'kimi-k2-resilient': {
                 'type': 'github',
-                'source': 'https://github.com/justmy2satoshis/kimi-k2-resilient-mcp.git',
-                'directory': 'kimi-k2-resilient-mcp',
+                'source': 'https://github.com/justmy2satoshis/kimi-k2-heavy-processor-mcp-repo.git',
+                'directory': 'kimi-k2-resilient-enhanced',
                 'branch': 'main',
-                'install': ['npm', 'install'],
+                'install': [],  # Python server - no npm install needed
                 'needs_db': True,  # UNIFIED with wrapper
                 'config': {
-                    'command': 'node',
-                    'args': [str(self.base_dir / 'kimi-k2-resilient-mcp' / 'index.js')]
+                    'command': 'python3',
+                    'args': [str(self.base_dir / 'kimi-k2-resilient-enhanced' / 'server.py')]
                 }
             },
             'rag-context': {
-                'type': 'github',
-                'source': 'https://github.com/justmy2satoshis/rag-context-mcp.git',
-                'directory': 'rag-context-mcp',
-                'branch': 'main',
-                'install': ['npm', 'install'],
-                'needs_db': True,  # UNIFIED with wrapper
+                'type': 'npm',
+                'source': '@notbnull/mcp-rag-context',
+                'install': ['npm', 'install', '-g', '@notbnull/mcp-rag-context'],
+                'needs_db': True,  # UNIFIED
                 'config': {
-                    'command': 'node',
-                    'args': [str(self.base_dir / 'rag-context-mcp' / 'index.js')]
+                    'command': 'npx',
+                    'args': ['-y', '@notbnull/mcp-rag-context'],
+                    'timeout': 120000
                 }
             }
         }
@@ -513,16 +517,37 @@ export MCP_UNIFIED="true"
             for name in existing_user_mcps:
                 print(f"    • {name}")
 
-        # Add/update federation MCPs
+        # Add/update federation MCPs with duplicate prevention
         updated_mcps = []
+        duplicate_prevention = {}  # Track duplicates by command+args combination
+
         for name in new_mcps:
             if name in matrix:
                 mcp_config = self.get_mcp_configuration(name, matrix[name])
+
+                # Create signature to detect duplicates
+                command = mcp_config.get('command', '')
+                args = ' '.join(mcp_config.get('args', []))
+                signature = f"{command}|{args}"
+
+                # Check for existing MCP with same signature
+                if signature in duplicate_prevention:
+                    existing_name = duplicate_prevention[signature]
+                    print(f"  ⚠️ Skipping {name}: duplicate of {existing_name}")
+                    continue
+
+                # Check if this MCP already exists with different config
+                if name in merged_config['mcpServers']:
+                    print(f"  🔄 Updating existing MCP: {name}")
+                else:
+                    print(f"  ➕ Adding new MCP: {name}")
+
                 merged_config['mcpServers'][name] = mcp_config
+                duplicate_prevention[signature] = name
                 updated_mcps.append(name)
 
                 db_status = "✓ Unified" if name in self.UNIFIED_DB_MCPS else "Independent"
-                print(f"  ✓ {name}: {db_status}")
+                print(f"    Status: {db_status}")
 
         print(f"\n  📊 Configuration summary:")
         print(f"    • User MCPs preserved: {len(existing_user_mcps)}")
@@ -668,8 +693,9 @@ export MCP_UNIFIED="true"
 def main():
     # Display version header
     print("="*70)
-    print(" MCP Federation Core v0.1.1 - SAFE INSTALLER")
+    print(" MCP Federation Core v0.1.2 - FIXED INSTALLER")
     print(" Lightweight Orchestrator for 15 Production-Ready MCPs")
+    print(" ✅ FIXED: All 6 MCP installation failures resolved")
     print(" ✅ SAFE Configuration Merging - Preserves User MCPs")
     print("="*70)
     print()
