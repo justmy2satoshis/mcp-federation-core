@@ -1,0 +1,15 @@
+# MCP Federation Core - Python Dependencies
+# For the installer and utility scripts
+
+# Core dependencies
+requests>=2.31.0
+colorama>=0.4.6
+packaging>=23.0
+
+# Testing dependencies
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+
+# Optional: For advanced features
+python-dotenv>=1.0.0
+rich>=13.0.0

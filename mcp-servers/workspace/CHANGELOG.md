@@ -1,94 +1,43 @@
 # Changelog
 
-## [3.2.0] - 2025-01-23 - PRODUCTION CERTIFIED
+All notable changes to the MCP Federation Core project will be documented in this file.
 
-### 🎉 Major Release - Production Ready
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-#### ✅ Major Achievements
-- **100% Test Coverage**: All 15 MCPs validated and functional
-- **True Federation**: Unified database with cross-MCP data sharing
-- **95% Cost Savings**: Validated through Ollama prioritization
-- **Performance**: 0.03ms queries (1,667x faster than target)
-
-#### Added
-- ✨ Safe selective uninstaller that preserves user MCPs
-- ✨ Automatic database schema initialization
-- ✨ API key configuration wizard
-- ✨ Cross-platform unified installer (Windows/macOS/Linux)
-- ✨ Comprehensive validation system
-- ✨ Test suite for installation cycles
-- ✨ Backup and restore functionality
-- ✨ Ollama auto-detection for Converse MCP
-
-#### Fixed
-- 🐛 SQLite MCP now correctly points to mcp-unified.db
-- 🐛 All path placeholders ([USERNAME], [INSTALL_PATH]) dynamically resolved
-- 🐛 Database schemas properly initialized on installation
-- 🐛 Uninstaller now detects all 15 MCPs (was only finding 6)
-- 🐛 Windows path handling issues resolved
-- 🐛 ASCII-only output for Windows compatibility
-
-### 🎯 Added
-- Unified database federation (`mcp-federation.db`)
-- Fixed RAG Context with numpy-based vector embeddings
-- Cross-MCP data sharing capability
-- Exhaustive test suite with 100% coverage
-- Performance benchmark suite
-- Cost analysis and validation
-- Health check system
-- Comprehensive documentation
-
-### 🔧 Fixed
-- **RAG Context**: Retrieval was returning empty arrays - now working with similarity scores
-- **Database Architecture**: Was 7 separate databases - now unified federation
-- **MCP Isolation**: MCPs were independent - now true federation with data sharing
-- **Converse MCP**: Was using npm package - now uses local enhanced version with Ollama
-
-### ✨ Enhanced
-- Installer v3.1 with conflict detection and backup
-- 4 resolution options for existing installations
-- Automatic rollback script generation
-- Performance optimizations throughout
-
-### 📊 Validated Metrics
-- **MCPs Tested**: 15/15 (100% coverage)
-- **Federation MCPs**: 6 storage-capable MCPs sharing data
-- **Query Performance**: 0.03ms average (target was 50ms)
-- **Concurrent Writes**: 169.4/sec throughput
-- **Cost Reduction**: 95% through Ollama (saves $28.50/month)
-- **Database Integrity**: 100% under concurrent load
-
-### 📦 MCPs Included
-1. **filesystem** - File system operations
-2. **memory** - Knowledge graph storage
-3. **sequential-thinking** - Step-by-step reasoning
-4. **desktop-commander** - System command execution
-5. **perplexity** - AI-powered search
-6. **converse** - Multi-model consensus (Ollama priority)
-7. **rag-context** - Vector-based semantic search (FIXED)
-8. **playwright** - Browser automation
-9. **sqlite** - Database operations
-10. **git-ops** - Version control
-11. **github-manager** - GitHub API integration
-12. **web-search** - Brave search API
-13. **expert-role-prompt** - 50 expert roles
-14. **kimi-k2-code-context** - 128K context analysis
-15. **kimi-k2-resilient** - Resilient data storage
-
-## [3.1.0] - 2025-01-22
+## [0.1.0] - 2025-01-24
 
 ### Added
-- Safe installer with conflict detection
-- Backup and restore functionality
-- Initial 15 MCP integration
+- Initial release of MCP Federation Core
+- Lightweight orchestrator for 15 production-ready MCP servers
+- Selective database unification for 4 MCPs (40% memory savings)
+- Automated installation from original sources (11 npm, 4 GitHub)
+- Wrapper script generation for database path injection
+- Cross-platform support (Windows/macOS/Linux)
+- Comprehensive uninstaller with preservation options
+- Zero bundled MCP code - pure orchestration approach
 
-## [3.0.0] - 2025-01-21
+### Technical Architecture
+- Federation pattern: thin coordinator, not monolithic bundle
+- Sources MCPs from original repositories
+- Environment variable configuration for npm MCPs
+- Wrapper scripts for GitHub MCPs that don't support env vars
+- Unified database for: memory, kimi-k2-code-context, kimi-k2-heavy-processor, rag-context
+- Independent database for: sqlite (user operations)
+- Stateless operation for: 10 remaining MCPs
 
-### Added
-- Initial release
-- Basic MCP federation concept
-- Cost optimization through Ollama
+### The 15 Federated MCPs
+**From npm (11):**
+- sequential-thinking, memory, filesystem, sqlite
+- github-manager, web-search, playwright
+- git-ops, desktop-commander, rag-context, perplexity
+
+**From GitHub (4):**
+- kimi-k2-heavy-processor-mcp
+- converse-mcp-enhanced
+- kimi-k2-code-context-mcp
+- expert-role-prompt-mcp
 
 ---
 
-*For detailed test results, see `/docs/EXHAUSTIVE_TEST_REPORT.md`*
+For migration from earlier versions or bundled installations, see the README.

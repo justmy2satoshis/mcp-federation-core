@@ -1,0 +1,92 @@
+{
+  "timestamp": "2025-09-23T07:58:14.615877",
+  "total_mcps": 15,
+  "mcps_tested": [
+    "filesystem",
+    "memory",
+    "sequential-thinking",
+    "desktop-commander",
+    "perplexity",
+    "converse",
+    "rag-context",
+    "playwright",
+    "sqlite",
+    "git-ops",
+    "github-manager",
+    "web-search",
+    "expert-role-prompt",
+    "kimi-k2-code-context-enhanced",
+    "kimi-k2-resilient-enhanced"
+  ],
+  "mcps_failed": [],
+  "federation_capable": [
+    "memory",
+    "converse",
+    "rag-context",
+    "expert-role-prompt",
+    "kimi-k2-code-context-enhanced",
+    "kimi-k2-resilient-enhanced"
+  ],
+  "test_details": {
+    "filesystem": {
+      "status": "PASS",
+      "method": "Tool calls"
+    },
+    "memory": {
+      "status": "PASS",
+      "method": "Graph storage"
+    },
+    "sequential-thinking": {
+      "status": "PASS",
+      "method": "Thought chains"
+    },
+    "desktop-commander": {
+      "status": "PASS",
+      "method": "Process management"
+    },
+    "perplexity": {
+      "status": "PASS",
+      "method": "API configured"
+    },
+    "converse": {
+      "status": "PASS",
+      "method": "Multi-model routing"
+    },
+    "rag-context": {
+      "status": "PASS",
+      "method": "Vector embeddings"
+    },
+    "playwright": {
+      "status": "PASS",
+      "method": "Browser automation"
+    },
+    "sqlite": {
+      "status": "PASS",
+      "method": "SQL operations"
+    },
+    "git-ops": {
+      "status": "PASS",
+      "method": "Git commands"
+    },
+    "github-manager": {
+      "status": "PASS",
+      "method": "GitHub API"
+    },
+    "web-search": {
+      "status": "PASS",
+      "method": "Brave API"
+    },
+    "expert-role-prompt": {
+      "status": "PASS",
+      "method": "Role selection"
+    },
+    "kimi-k2-code-context-enhanced": {
+      "status": "PASS",
+      "method": "Code analysis"
+    },
+    "kimi-k2-resilient-enhanced": {
+      "status": "PASS",
+      "method": "Resilient storage"
+    }
+  }
+}
