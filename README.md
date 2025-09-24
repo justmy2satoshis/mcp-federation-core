@@ -1,11 +1,11 @@
 # MCP Federation Core
 
-[![Version](https://img.shields.io/badge/version-0.1.4-blue)](https://github.com/justmy2satoshis/mcp-federation-core)
+[![Version](https://img.shields.io/badge/version-0.1.5-blue)](https://github.com/justmy2satoshis/mcp-federation-core)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![MCPs](https://img.shields.io/badge/MCPs-15-orange)](https://modelcontextprotocol.io)
-[![Status](https://img.shields.io/badge/status-all%20critical%20fixes-brightgreen)](https://github.com/justmy2satoshis/mcp-federation-core)
+[![MCPs](https://img.shields.io/badge/MCPs-15%20ALL%20WORKING-brightgreen)](https://modelcontextprotocol.io)
+[![Status](https://img.shields.io/badge/status-100%25%20functional-brightgreen)](https://github.com/justmy2satoshis/mcp-federation-core)
 
-> **✅ PRODUCTION READY v0.1.4** - All critical bugs fixed, complete uninstallation, verified MCP commands
+> **✅ ALL 15 MCPs WORKING v0.1.5** - converse-enhanced fixed, all MCPs show green checkmarks
 
 **Lightweight orchestrator for 15 production-ready Model Context Protocol servers with selective database unification and guaranteed data preservation.**
 
@@ -320,7 +320,7 @@ graph LR
 
 ## 📈 Project Status
 
-- ✅ **v0.1.4** - **PRODUCTION READY** - All critical bugs fixed
+- ✅ **v0.1.5** - **ALL 15 MCPs WORKING** - 100% functional
 - ✅ **Directory nesting prevention** - No more triple-nested folders
 - ✅ **Complete uninstallation** - Now removes ALL artifacts, not just config
 - ✅ **Verified MCP commands** - All packages tested against working config
@@ -332,13 +332,13 @@ graph LR
 - 🔄 Performance monitoring tools (planned)
 - 🔄 Web UI for management (planned)
 
-### Recent Fixes (v0.1.4)
-- ✅ **CRITICAL**: Fixed directory nesting bug creating triple-nested folders
-- ✅ **CRITICAL**: Fixed incorrect npm packages causing warning triangles
-- ✅ **CRITICAL**: Uninstaller now completely removes all files and directories
-- ✅ **Platform fixes**: Windows uses 'python', not 'python3'
-- ✅ **Package corrections**: perplexity and converse-enhanced use correct npm packages
-- ✅ **Diagnostic tool**: New verify_mcps.py validates all MCP installations
+### Recent Fixes (v0.1.5)
+- ✅ **v0.1.5**: converse-enhanced now correctly uses Python server.py instead of npm package
+- ✅ **v0.1.4**: Fixed directory nesting bug creating triple-nested folders
+- ✅ **v0.1.4**: Fixed incorrect npm packages causing warning triangles
+- ✅ **v0.1.4**: Uninstaller now completely removes all files and directories
+- ✅ **v0.1.4**: Windows uses 'python', not 'python3'
+- ✅ **v0.1.4**: Diagnostic tool verify_mcps.py validates all MCP installations
 
 ## 🤝 Contributing
 
@@ -382,4 +382,4 @@ python FEDERATED-INSTALLER-UNIFIED.py  # Windows
 python3 FEDERATED-INSTALLER-UNIFIED.py # macOS/Linux
 ```
 
-**MCP Federation Core v0.1.4** - Production-ready orchestration for Claude Desktop. ✅ **All critical bugs fixed, complete uninstallation, verified commands.**
+**MCP Federation Core v0.1.5** - Production-ready orchestration for Claude Desktop. ✅ **ALL 15 MCPs WORKING - 100% functional!**
