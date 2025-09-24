@@ -49,7 +49,7 @@ class TestFederationUninstaller(unittest.TestCase):
 
     def test_scenario_1_clean_uninstall(self):
         """Test: Clean uninstall with only federation MCPs"""
-        print("\n✅ Test 1: Clean uninstall")
+        print("\n[PASS] Test 1: Clean uninstall")
 
         # Setup: Config with only federation MCPs
         federation_mcps = ['filesystem', 'memory', 'sqlite', 'git-ops', 'playwright']
@@ -73,7 +73,7 @@ class TestFederationUninstaller(unittest.TestCase):
 
     def test_scenario_2_preserve_user_mcps(self):
         """Test: Preserve existing user MCPs"""
-        print("\n✅ Test 2: Preserve user MCPs")
+        print("\n[PASS] Test 2: Preserve user MCPs")
 
         # Setup: Config with mixed MCPs
         all_mcps = [
@@ -110,7 +110,7 @@ class TestFederationUninstaller(unittest.TestCase):
 
     def test_scenario_3_no_federation_mcps(self):
         """Test: Handle when no federation MCPs are installed"""
-        print("\n✅ Test 3: No federation MCPs")
+        print("\n[PASS] Test 3: No federation MCPs")
 
         # Setup: Config with only user MCPs
         user_mcps = ['custom-tool', 'my-server', 'private-mcp']
@@ -134,7 +134,7 @@ class TestFederationUninstaller(unittest.TestCase):
 
     def test_scenario_4_backup_restoration(self):
         """Test: Restore from backup"""
-        print("\n✅ Test 4: Backup restoration")
+        print("\n[PASS] Test 4: Backup restoration")
 
         # Create original config
         original_mcps = ['user-mcp-1', 'user-mcp-2']
@@ -165,7 +165,7 @@ class TestFederationUninstaller(unittest.TestCase):
 
     def test_scenario_5_missing_config(self):
         """Test: Handle missing configuration file"""
-        print("\n✅ Test 5: Missing configuration")
+        print("\n[PASS] Test 5: Missing configuration")
 
         # Remove config file
         if self.config_path.exists():
@@ -179,7 +179,7 @@ class TestFederationUninstaller(unittest.TestCase):
 
     def test_scenario_6_partial_federation(self):
         """Test: Handle partial federation installation"""
-        print("\n✅ Test 6: Partial federation")
+        print("\n[PASS] Test 6: Partial federation")
 
         # Setup: Only some federation MCPs installed
         partial_mcps = [
@@ -210,7 +210,7 @@ class TestFederationUninstaller(unittest.TestCase):
 
     def test_scenario_7_all_15_mcps(self):
         """Test: Verify all 15 federation MCPs are recognized"""
-        print("\n✅ Test 7: All 15 federation MCPs")
+        print("\n[PASS] Test 7: All 15 federation MCPs")
 
         # All 15 federation MCPs
         all_federation = [
@@ -266,14 +266,14 @@ def run_tests():
     print("="*70)
 
     if result.wasSuccessful():
-        print("\n✅ ALL TESTS PASSED")
-        print(f"   • Tests run: {result.testsRun}")
-        print(f"   • Success rate: 100%")
+        print("\n[PASS] ALL TESTS PASSED")
+        print(f"   - Tests run: {result.testsRun}")
+        print(f"   - Success rate: 100%")
     else:
-        print("\n❌ SOME TESTS FAILED")
-        print(f"   • Tests run: {result.testsRun}")
-        print(f"   • Failures: {len(result.failures)}")
-        print(f"   • Errors: {len(result.errors)}")
+        print("\n[FAIL] SOME TESTS FAILED")
+        print(f"   - Tests run: {result.testsRun}")
+        print(f"   - Failures: {len(result.failures)}")
+        print(f"   - Errors: {len(result.errors)}")
 
     return result.wasSuccessful()
 
