@@ -14,7 +14,9 @@
       "mcp__github-manager__create_or_update_file",
       "Bash(npm search:*)",
       "mcp__web-search__brave_web_search",
-      "Bash(timeout 30 python FEDERATED-INSTALLER-UNIFIED.py)"
+      "Bash(timeout 30 python FEDERATED-INSTALLER-UNIFIED.py)",
+      "Bash(git push:*)",
+      "Bash(git pull:*)"
     ],
     "deny": [],
     "ask": []
