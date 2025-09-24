@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-MCP Federation Core - Clean Uninstaller
-Removes federation MCPs while preserving user's original configuration
+MCP Federation Core v0.1.3 - SAFE Clean Uninstaller
+PRESERVATION FIX: Uses installation manifest to only remove MCPs that were actually installed
+Protects pre-existing user MCPs with federation names from accidental removal
 """
 
 import json
@@ -17,9 +18,11 @@ class MCPUninstaller:
         self.base_dir = self.home / "mcp-servers"
         self.config_path = self._get_config_path()
         self.backup_dir = self.base_dir / "backups"
+        self.manifest_path = self.base_dir / "installation_manifest.json"
 
-        # List of federation MCPs to remove
-        self.federation_mcps = [
+        # DEPRECATED: Hardcoded list - now uses installation manifest
+        # Kept for fallback compatibility only
+        self.fallback_federation_mcps = [
             'sequential-thinking', 'memory', 'filesystem', 'sqlite',
             'github-manager', 'web-search', 'playwright', 'git-ops',
             'desktop-commander', 'perplexity', 'expert-role-prompt',
@@ -34,6 +37,41 @@ class MCPUninstaller:
             return self.home / "Library" / "Application Support" / "Claude" / "claude_desktop_config.json"
         else:  # Linux
             return self.home / ".config" / "Claude" / "claude_desktop_config.json"
+
+    def load_installation_manifest(self):
+        """Load installation manifest to identify what MCPs to remove safely"""
+        if not self.manifest_path.exists():
+            print(f"  ⚠️  No installation manifest found at: {self.manifest_path}")
+            print(f"  ℹ️  Using fallback method (all federation MCPs will be removed)")
+            return None
+
+        try:
+            with open(self.manifest_path, 'r', encoding='utf-8') as f:
+                manifest = json.load(f)
+
+            print(f"  ✅ Loaded manifest from: {self.manifest_path}")
+            print(f"     Installation date: {manifest.get('installation_date', 'Unknown')}")
+            print(f"     Installer version: {manifest.get('installer_version', 'Unknown')}")
+
+            pre_existing = manifest.get('pre_existing_mcps', [])
+            newly_installed = manifest.get('newly_installed_mcps', [])
+
+            if pre_existing:
+                print(f"  🔒 Protected pre-existing MCPs: {len(pre_existing)}")
+                for mcp in pre_existing:
+                    print(f"     • {mcp} (WILL BE PRESERVED)")
+
+            if newly_installed:
+                print(f"  🗑️  MCPs to remove: {len(newly_installed)}")
+                for mcp in newly_installed:
+                    print(f"     • {mcp} (will be removed)")
+
+            return manifest
+
+        except Exception as e:
+            print(f"  ❌ Error loading manifest: {e}")
+            print(f"  ℹ️  Using fallback method")
+            return None
 
     def find_latest_backup(self):
         """Find the most recent backup file"""
@@ -55,12 +93,15 @@ class MCPUninstaller:
         return None
 
     def remove_federation_mcps(self):
-        """Remove federation MCPs from current configuration"""
-        print("\n🗑️  Removing Federation MCPs...")
+        """SAFE removal using installation manifest - only removes newly installed MCPs"""
+        print("\n🗑️  SAFE Federation MCP Removal (Manifest-Based)...")
 
         if not self.config_path.exists():
             print("  ⚠️  No configuration file found")
             return False
+
+        # Load installation manifest
+        manifest = self.load_installation_manifest()
 
         try:
             # Load current config
@@ -71,35 +112,69 @@ class MCPUninstaller:
                 print("  ⚠️  No MCPs configured")
                 return False
 
+            # Determine which MCPs to remove
+            if manifest:
+                # SAFE MODE: Only remove MCPs that were newly installed by federation
+                mcps_to_remove = manifest.get('newly_installed_mcps', [])
+                pre_existing = manifest.get('pre_existing_mcps', [])
+
+                print(f"\n  🔒 PROTECTION ACTIVE: {len(pre_existing)} pre-existing MCPs will be preserved")
+                print(f"  🗑️  REMOVAL TARGET: {len(mcps_to_remove)} newly installed MCPs")
+            else:
+                # FALLBACK MODE: Remove all federation MCPs (old behavior)
+                mcps_to_remove = self.fallback_federation_mcps
+                pre_existing = []
+                print(f"\n  ⚠️  FALLBACK MODE: No manifest found, removing all federation MCPs")
+                print(f"  ❗ WARNING: Pre-existing MCPs with federation names may be removed")
+
             # Count MCPs before removal
             before_count = len(config['mcpServers'])
             removed = []
+            preserved = []
+            not_found = []
 
-            # Remove federation MCPs
-            for mcp_name in self.federation_mcps:
+            # Process each MCP to remove
+            for mcp_name in mcps_to_remove:
                 if mcp_name in config['mcpServers']:
                     del config['mcpServers'][mcp_name]
                     removed.append(mcp_name)
                     print(f"  ✓ Removed: {mcp_name}")
+                else:
+                    not_found.append(mcp_name)
+                    print(f"  ℹ️  Not found: {mcp_name}")
+
+            # Check for preserved pre-existing MCPs
+            if manifest:
+                for mcp_name in pre_existing:
+                    if mcp_name in config['mcpServers']:
+                        preserved.append(mcp_name)
+                        print(f"  🔒 PRESERVED: {mcp_name} (was pre-existing)")
 
             # Count MCPs after removal
             after_count = len(config['mcpServers'])
 
+            # Save updated config if changes were made
             if removed:
-                # Save updated config
                 with open(self.config_path, 'w', encoding='utf-8') as f:
                     json.dump(config, f, indent=2)
 
-                print(f"\n  📊 Summary:")
+                print(f"\n  📊 REMOVAL SUMMARY:")
                 print(f"     MCPs before: {before_count}")
                 print(f"     MCPs removed: {len(removed)}")
+                print(f"     MCPs preserved: {len(preserved)}")
                 print(f"     MCPs remaining: {after_count}")
 
-                # List remaining MCPs
-                if after_count > 0:
-                    print(f"\n  💾 Preserved user MCPs:")
-                    for mcp in config['mcpServers'].keys():
+                if preserved:
+                    print(f"\n  🔒 PRESERVED PRE-EXISTING MCPs:")
+                    for mcp in preserved:
                         print(f"     ✓ {mcp}")
+
+                # List all remaining MCPs
+                if after_count > 0:
+                    print(f"\n  💾 ALL REMAINING MCPs:")
+                    for mcp in config['mcpServers'].keys():
+                        status = "(pre-existing)" if mcp in preserved else "(user MCP)"
+                        print(f"     ✓ {mcp} {status}")
             else:
                 print("  ℹ️  No federation MCPs found to remove")
 
@@ -153,25 +228,30 @@ class MCPUninstaller:
             self.base_dir / "converse",
             self.base_dir / "rag-context",
             self.base_dir / "kimi-k2-code-context-enhanced",
-            self.base_dir / "kimi-k2-resilient-enhanced"
+            self.base_dir / "kimi-k2-resilient-enhanced",
+            self.base_dir / "federation-wrappers",
+            self.manifest_path  # Clean up the installation manifest too
         ]
 
+        cleaned_count = 0
         for item in items_to_clean:
             if item.exists():
                 if item.is_file():
                     item.unlink()
                     print(f"  ✓ Removed file: {item.name}")
+                    cleaned_count += 1
                 elif item.is_dir():
                     shutil.rmtree(item)
                     print(f"  ✓ Removed directory: {item.name}")
+                    cleaned_count += 1
 
-        print("  ✅ Federation files cleaned")
+        print(f"  ✅ Federation cleanup complete: {cleaned_count} items removed")
 
     def uninstall(self, mode='selective'):
-        """Main uninstallation process"""
+        """SAFE uninstallation process with manifest-based preservation"""
         print("\n" + "="*70)
-        print(" MCP FEDERATION CORE - CLEAN UNINSTALLER")
-        print(" Preserving Your Original Configuration")
+        print(" MCP FEDERATION CORE v0.1.3 - SAFE CLEAN UNINSTALLER")
+        print(" PRESERVATION FIX: Protects Pre-Existing User MCPs")
         print("="*70)
 
         if mode == 'restore':
@@ -191,12 +271,13 @@ class MCPUninstaller:
             self.clean_federation_files()
 
         print("\n" + "="*70)
-        print(" ✅ UNINSTALLATION COMPLETE")
+        print(" ✅ SAFE UNINSTALLATION COMPLETE")
         print("="*70)
         print("\n📋 Next Steps:")
         print("  1. Restart Claude Desktop")
-        print("  2. Your original MCPs (if any) are preserved")
-        print("  3. Federation MCPs have been removed")
+        print("  2. Pre-existing MCPs with federation names are PRESERVED")
+        print("  3. Only newly installed federation MCPs were removed")
+        print("  4. Installation manifest was used to ensure safe removal")
 
         return True
 

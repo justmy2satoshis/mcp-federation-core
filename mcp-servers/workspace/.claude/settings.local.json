@@ -6,7 +6,15 @@
       "Bash(python:*)",
       "Read(//c/Users/User/mcp-servers/**)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Read(//c/Users/User/AppData/Roaming/Claude/**)",
+      "mcp__sequential-thinking__sequentialthinking",
+      "Bash(ls:*)",
+      "Bash(pkill:*)",
+      "mcp__github-manager__create_or_update_file",
+      "Bash(npm search:*)",
+      "mcp__web-search__brave_web_search",
+      "Bash(timeout 30 python FEDERATED-INSTALLER-UNIFIED.py)"
     ],
     "deny": [],
     "ask": []
