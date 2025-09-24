@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """
-MCP Federation Core v0.1.5 - Fixed converse-enhanced Python configuration
+MCP Federation Core v0.1.6 - Fixed converse-enhanced missing requirements.txt
 Copyright (c) 2025 justmy2satoshis
 Licensed under MIT License
 
-CRITICAL UPDATE v0.1.5 - Fixed converse-enhanced to use Python server:
+CRITICAL UPDATE v0.1.6 - Fixed converse-enhanced installation:
+- converse-enhanced now installs dependencies directly (httpx, python-dotenv)
+- Bypasses missing requirements.txt in repository
+
+PREVIOUS UPDATE v0.1.5 - Fixed converse-enhanced to use Python server:
 - converse-enhanced now correctly uses Python server.py instead of npm package
 
 PREVIOUS UPDATE v0.1.4 - Fixed directory nesting and MCP command errors:
@@ -323,7 +327,7 @@ export MCP_UNIFIED="true"
                 'source': 'https://github.com/justmy2satoshis/converse-mcp-enhanced.git',
                 'directory': 'converse-mcp-enhanced',
                 'branch': 'main',
-                'install': ['pip', 'install', '-r', 'requirements.txt'],
+                'install': ['pip', 'install', 'httpx', 'python-dotenv'],
                 'needs_db': False,
                 'config': {
                     'command': 'python',
@@ -769,8 +773,8 @@ export MCP_UNIFIED="true"
     def install(self):
         """Main installation process"""
         print("\n" + "="*70)
-        print(" MCP FEDERATION CORE v0.1.5 - UNIFIED INSTALLER")
-        print(" All 15 MCPs Now Working - converse-enhanced Fixed")
+        print(" MCP FEDERATION CORE v0.1.6 - UNIFIED INSTALLER")
+        print(" All 15 MCPs Working - converse-enhanced Dependencies Fixed")
         print("="*70)
 
         # Check for directory nesting issues first
