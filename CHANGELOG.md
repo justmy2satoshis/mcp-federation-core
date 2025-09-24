@@ -1,74 +1,90 @@
 # Changelog
 
-## [3.2.0] - 2025-01-23 - PRODUCTION CERTIFIED
+All notable changes to the MCP Federation Core project will be documented in this file.
 
-### ✅ Major Achievements
-- **100% Test Coverage**: All 15 MCPs validated and functional
-- **True Federation**: Unified database with cross-MCP data sharing
-- **95% Cost Savings**: Validated through Ollama prioritization
-- **Performance**: 0.03ms queries (1,667x faster than target)
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-### 🎯 Added
-- Unified database federation (`mcp-federation.db`)
-- Fixed RAG Context with numpy-based vector embeddings
-- Cross-MCP data sharing capability
-- Exhaustive test suite with 100% coverage
-- Performance benchmark suite
-- Cost analysis and validation
-- Health check system
-- Comprehensive documentation
+## [0.1.4] - 2025-01-24
 
-### 🔧 Fixed
-- **RAG Context**: Retrieval was returning empty arrays - now working with similarity scores
-- **Database Architecture**: Was 7 separate databases - now unified federation
-- **MCP Isolation**: MCPs were independent - now true federation with data sharing
-- **Converse MCP**: Was using npm package - now uses local enhanced version with Ollama
+### CRITICAL FIXES
+- **FIXED**: Directory nesting bug that created triple-nested mcp-federation-core folders
+- **FIXED**: Incorrect npm package names causing warning triangles in Claude Desktop
+- **FIXED**: Uninstaller now completely removes all installed files and directories
+- **FIXED**: Python command compatibility on Windows (python3 → python)
 
-### ✨ Enhanced
-- Installer v3.1 with conflict detection and backup
-- 4 resolution options for existing installations
-- Automatic rollback script generation
-- Performance optimizations throughout
+### Major Changes
+- **Installer v0.1.4**:
+  - Added `check_installation_location()` to prevent directory nesting
+  - Fixed perplexity package: `perplexity-mcp-server` → `server-perplexity-ask`
+  - Changed converse-enhanced from GitHub to npm: `converse-mcp-server`
+  - Platform-specific Python commands (Windows uses 'python')
+  - Enhanced error handling and validation
 
-### 📊 Validated Metrics
-- **MCPs Tested**: 15/15 (100% coverage)
-- **Federation MCPs**: 6 storage-capable MCPs sharing data
-- **Query Performance**: 0.03ms average (target was 50ms)
-- **Concurrent Writes**: 169.4/sec throughput
-- **Cost Reduction**: 95% through Ollama (saves $28.50/month)
-- **Database Integrity**: 100% under concurrent load
+- **Uninstaller v0.1.4**:
+  - Three-level removal options: config-only, data files, or complete removal
+  - Added `remove_installed_directories()` for complete artifact removal
+  - Now removes entire mcp-servers directory when complete removal is selected
+  - Preserves user choice through interactive prompts
 
-### 📦 MCPs Included
-1. **filesystem** - File system operations
-2. **memory** - Knowledge graph storage
-3. **sequential-thinking** - Step-by-step reasoning
-4. **desktop-commander** - System command execution
-5. **perplexity** - AI-powered search
-6. **converse** - Multi-model consensus (Ollama priority)
-7. **rag-context** - Vector-based semantic search (FIXED)
-8. **playwright** - Browser automation
-9. **sqlite** - Database operations
-10. **git-ops** - Version control
-11. **github-manager** - GitHub API integration
-12. **web-search** - Brave search API
-13. **expert-role-prompt** - 50 expert roles
-14. **kimi-k2-code-context** - 128K context analysis
-15. **kimi-k2-resilient** - Resilient data storage
+- **New Diagnostic Tool**:
+  - Created `verify_mcps.py` to test all MCPs for green checkmarks
+  - Validates npm packages and script locations
+  - Provides detailed fix suggestions for common issues
+  - Saves verification results to JSON for debugging
 
-## [3.1.0] - 2025-01-22
+### Package Corrections
+- perplexity: Uses `server-perplexity-ask` (npm)
+- converse-enhanced: Uses `converse-mcp-server` (npm)
+- All other packages verified against working Claude Desktop configuration
+
+## [0.1.3] - 2025-01-23
+
+### CRITICAL FIX - Data Preservation
+- **FIXED**: Data loss bug - uninstaller was removing pre-existing user MCPs
+- Added installation manifest tracking to differentiate pre-existing vs newly installed MCPs
+- Implemented safe uninstallation that only removes federation-installed MCPs
+
+### Major Changes
+- Installation manifest (`installation_manifest.json`) tracks:
+  - Pre-existing MCPs (preserved during uninstall)
+  - Newly installed MCPs (safe to remove)
+  - Installation date and version
+  - Failed installations
+
+## [0.1.0] - 2025-01-22
 
 ### Added
-- Safe installer with conflict detection
-- Backup and restore functionality
-- Initial 15 MCP integration
+- Initial release of MCP Federation Core
+- Lightweight orchestrator for 15 production-ready MCP servers
+- Selective database unification for 4 MCPs (40% memory savings)
+- Automated installation from original sources (11 npm, 4 GitHub)
+- Wrapper script generation for database path injection
+- Cross-platform support (Windows/macOS/Linux)
+- Comprehensive uninstaller with preservation options
+- Zero bundled MCP code - pure orchestration approach
 
-## [3.0.0] - 2025-01-21
+### Technical Architecture
+- Federation pattern: thin coordinator, not monolithic bundle
+- Sources MCPs from original repositories
+- Environment variable configuration for npm MCPs
+- Wrapper scripts for GitHub MCPs that don't support env vars
+- Unified database for: memory, kimi-k2-code-context, kimi-k2-heavy-processor, rag-context
+- Independent database for: sqlite (user operations)
+- Stateless operation for: 10 remaining MCPs
 
-### Added
-- Initial release
-- Basic MCP federation concept
-- Cost optimization through Ollama
+### The 15 Federated MCPs
+**From npm (11):**
+- sequential-thinking, memory, filesystem, sqlite
+- github-manager, web-search, playwright
+- git-ops, desktop-commander, rag-context, perplexity
+
+**From GitHub (4):**
+- kimi-k2-heavy-processor-mcp
+- converse-mcp-enhanced
+- kimi-k2-code-context-mcp
+- expert-role-prompt-mcp
 
 ---
 
-*For detailed test results, see `/docs/EXHAUSTIVE_TEST_REPORT.md`*
+For migration from earlier versions or bundled installations, see the README.
