@@ -331,7 +331,7 @@ export MCP_UNIFIED="true"
                 'needs_db': False,
                 'config': {
                     'command': 'python',
-                    'args': [str(self.base_dir / 'converse-mcp-enhanced' / 'src' / 'server.py')],
+                    'args': [str(self.base_dir / 'converse-mcp-enhanced' / 'src' / 'mcp_server.py')],
                     'env': {
                         'OPENAI_API_KEY': 'YOUR_OPENAI_KEY',
                         'GEMINI_API_KEY': 'YOUR_GEMINI_KEY'
