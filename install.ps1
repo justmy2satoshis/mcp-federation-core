@@ -117,6 +117,7 @@ $mcpDefinitions = @(
         name = "expert-role-prompt"
         url = "https://github.com/justmy2satoshis/expert-role-prompt-mcp.git"
         type = "node"
+        customPath = "src\server.js"
         description = "50 expert personas with domain-specific reasoning"
     },
     @{
@@ -310,9 +311,16 @@ foreach ($mcp in $installedMCPs) {
             }
         }
         "node" {
-            @{
-                command = "node"
-                args = @(Join-Path $serverPath "src\server.js")
+            if ($mcp.customPath) {
+                @{
+                    command = "node"
+                    args = @(Join-Path $serverPath $mcp.customPath)
+                }
+            } else {
+                @{
+                    command = "node"
+                    args = @(Join-Path $serverPath "src\server.js")
+                }
             }
         }
         "python" {

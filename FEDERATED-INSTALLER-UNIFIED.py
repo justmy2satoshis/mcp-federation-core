@@ -312,14 +312,14 @@ export MCP_UNIFIED="true"
             # GitHub MCPs - need wrappers for unified DB
             'expert-role-prompt': {
                 'type': 'github',
-                'source': 'https://github.com/justmy2satoshis/expert-role-prompt-mcp-repo.git',
-                'directory': 'expert-role-prompt',
+                'source': 'https://github.com/justmy2satoshis/expert-role-prompt-mcp.git',
+                'directory': 'expert-role-prompt-mcp',
                 'branch': 'main',
                 'install': ['npm', 'install'],
                 'needs_db': False,
                 'config': {
                     'command': 'node',
-                    'args': [str(self.base_dir / 'expert-role-prompt' / 'server.js')]
+                    'args': [str(self.base_dir / 'expert-role-prompt-mcp' / 'src' / 'server.js')]
                 }
             },
             'converse-enhanced': {
