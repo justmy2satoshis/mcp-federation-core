@@ -444,6 +444,19 @@ class FederatedUnifiedInstaller:
             print(f"  ❌ Exception during installation: {e}")
             return False
 
+    def validate_mcp_files(self, name, config):
+        """Validate that MCP server files exist"""
+        # Check if command is a path to a file
+        if 'args' in config and len(config['args']) > 0:
+            # First arg is often the script path
+            script_path = Path(config['args'][0])
+            if script_path.exists():
+                return True
+            else:
+                print(f"  ⚠️ Warning: Script not found: {script_path}")
+                return False
+        return True  # Non-file based commands (like npm global packages)
+
     def write_configuration(self):
         """Write Claude Desktop configuration with progress"""
         print("\n📝 Writing Claude Desktop configuration...")
@@ -470,12 +483,18 @@ class FederatedUnifiedInstaller:
             # Add our MCPs
             matrix = self.get_mcp_source_matrix()
             added_count = 0
+            skipped_count = 0
 
             for name in self.installed_mcps:
                 if name in matrix:
                     mcp_info = matrix[name]
-                    config['mcpServers'][name] = mcp_info['config']
-                    added_count += 1
+                    # Validate before adding
+                    if self.validate_mcp_files(name, mcp_info['config']):
+                        config['mcpServers'][name] = mcp_info['config']
+                        added_count += 1
+                    else:
+                        print(f"  ⚠️ Skipping {name} due to missing files")
+                        skipped_count += 1
 
             # Write config
             print(f"  → Writing configuration with {len(config['mcpServers'])} total MCPs...")
@@ -484,6 +503,8 @@ class FederatedUnifiedInstaller:
 
             print(f"  ✅ Configuration saved successfully")
             print(f"  ✅ Added {added_count} federation MCPs")
+            if skipped_count > 0:
+                print(f"  ⚠️ Skipped {skipped_count} MCPs due to missing files")
             return True
 
         except Exception as e:
