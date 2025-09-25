@@ -117,7 +117,7 @@ $mcpDefinitions = @(
         name = "expert-role-prompt"
         url = "https://github.com/justmy2satoshis/expert-role-prompt-mcp.git"
         type = "node"
-        customPath = "src\server.js"
+        customPath = "server.js"
         description = "50 expert personas with domain-specific reasoning"
     },
     @{
