@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-MCP Federation Core v2.0.0 - Enhanced UX Installer
+MCP Federation Core v2.2.0 - Enhanced UX Installer
 Copyright (c) 2025 justmy2satoshis
 Licensed under MIT License
 
-MAJOR UPDATE v2.0.0 - Complete UX overhaul:
+MAJOR UPDATE v2.2.0 - Fixed all installation issues:
 - Verbose output for every action
 - Progress tracking [1/15], [2/15], etc.
 - Clear error messages and debugging info
@@ -65,7 +65,7 @@ class FederatedUnifiedInstaller:
     def print_banner(self):
         """Display startup banner with system information"""
         print("\n" + "="*70)
-        print(" MCP FEDERATION CORE INSTALLER v2.0.0")
+        print(" MCP FEDERATION CORE INSTALLER v2.2.0")
         print("="*70)
         print(f" Installing to: {self.base_dir}")
         print(f" Python: {sys.version.split()[0]}")
@@ -199,12 +199,14 @@ class FederatedUnifiedInstaller:
                 }
             },
             'memory': {
-                'type': 'npm',
+                'type': 'npx',
                 'source': 'mcp-server-memory',
-                'install': ['npm', 'install', '-g', 'mcp-server-memory'],
+                'install': [],  # NPX packages don't need pre-installation
                 'needs_db': True,
                 'config': {
-                    'command': 'mcp-server-memory'
+                    'command': 'npx',
+                    'args': ['-y', 'mcp-server-memory'],
+                    'env': {'NODE_NO_WARNINGS': '1'}
                 }
             },
             'web-search': {
@@ -675,7 +677,7 @@ class FederatedUnifiedInstaller:
         print("  • GitHub: https://github.com/justmy2satoshis/mcp-federation-core")
         print("  • Issues: https://github.com/justmy2satoshis/mcp-federation-core/issues")
 
-        print("\n✨ Enjoy using MCP Federation Core v2.0.0!")
+        print("\n✨ Enjoy using MCP Federation Core v2.2.0!")
         print("="*70)
 
 def main():

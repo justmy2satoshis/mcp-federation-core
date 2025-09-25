@@ -1,13 +1,13 @@
-# MCP Federation Core v2.0 - Production Suite 🚀
+# MCP Federation Core v2.2 - Production Suite 🚀
 
 [![MCPs](https://img.shields.io/badge/MCPs-15-blue)](https://modelcontextprotocol.io/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Cost Savings](https://img.shields.io/badge/Savings-80--95%25-purple)](https://ollama.ai/)
 [![Claude Desktop](https://img.shields.io/badge/Claude-Desktop-orange)](https://claude.ai)
-[![Version](https://img.shields.io/badge/Version-2.0.0-red)](https://github.com/justmy2satoshis/mcp-federation-core)
+[![Version](https://img.shields.io/badge/Version-2.2.0-red)](https://github.com/justmy2satoshis/mcp-federation-core)
 [![Status](https://img.shields.io/badge/status-100%25%20functional-brightgreen)](https://github.com/justmy2satoshis/mcp-federation-core)
 
-> **✅ ALL 15 MCPs WORKING v2.0.0** - Production-ready suite with expert roles, Ollama priority, and advanced reasoning
+> **✅ ALL 15 MCPs WORKING v2.2.0** - Fixed memory and NPX package issues, guaranteed all MCPs install correctly
 
 **Lightweight orchestrator for 15 production-ready Model Context Protocol servers with selective database unification, guaranteed data preservation, and enterprise-grade features.**
 
