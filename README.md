@@ -84,42 +84,118 @@ Stateless (10 MCPs):
 | **git-ops** | Git version control operations | npm: `git-ops-mcp` |
 | **rag-context** | RAG-based context management | npm: `@modelcontextprotocol/server-rag-context` |
 
-## ⚡ Quick Installation
+## 🚀 Quick Installation
 
-**⚠️ CRITICAL: Make sure you're in the repository root where `FEDERATED-INSTALLER-UNIFIED.py` is located.**
+### Prerequisites
+- **Python 3.8+** (use `python` on Windows, `python3` on macOS/Linux)
+- **Node.js 18+** (verify with `node --version`)
+- **Git** (verify with `git --version`)
+- **Claude Desktop** (must be installed first)
+- **Internet connection** for downloading packages
 
-### Windows (PowerShell)
+### Installation Steps
+
+#### Option 1: Fresh Installation
+If you're installing for the first time:
+
+**Windows (PowerShell)**
 ```powershell
 # Clone the repository
 git clone https://github.com/justmy2satoshis/mcp-federation-core.git
 cd mcp-federation-core
 
-# Verify you're in the right location
-dir  # Should show FEDERATED-INSTALLER-UNIFIED.py
+# Run the verbose installer for clear feedback
+python FEDERATED-INSTALLER-UNIFIED-VERBOSE.py
 
-# Run the installer
+# Or use the original installer
 python FEDERATED-INSTALLER-UNIFIED.py
 ```
 
-### macOS/Linux
+**macOS/Linux**
 ```bash
 # Clone the repository
 git clone https://github.com/justmy2satoshis/mcp-federation-core.git
 cd mcp-federation-core
 
-# Verify you're in the right location
-ls   # Should show FEDERATED-INSTALLER-UNIFIED.py
+# Run the verbose installer for clear feedback
+python3 FEDERATED-INSTALLER-UNIFIED-VERBOSE.py
 
-# Run the installer
+# Or use the original installer
 python3 FEDERATED-INSTALLER-UNIFIED.py
 ```
 
-### Prerequisites
-- Python 3.8+ (use `python` on Windows, `python3` on macOS/Linux)
-- Node.js 18+
-- Git
-- Claude Desktop
-- Internet connection for package downloads
+#### Option 2: Update Existing Installation
+If you already have the repository cloned:
+
+```bash
+# Navigate to your existing directory
+cd mcp-federation-core
+
+# Pull latest updates
+git pull origin main
+
+# Run the installer
+python FEDERATED-INSTALLER-UNIFIED-VERBOSE.py  # Windows
+python3 FEDERATED-INSTALLER-UNIFIED-VERBOSE.py # macOS/Linux
+```
+
+### 📊 What to Expect During Installation
+
+The enhanced installer will show:
+1. **Startup Banner** - System information and installation paths
+2. **Prerequisites Check** - Verifies Python, Node.js, npm, and git
+3. **Progress Indicators** - [1/15], [2/15], etc. for each MCP
+4. **Real-time Feedback** - ✅ for success, ❌ for failures, → for ongoing
+5. **Installation Summary** - Success/failure count and next steps
+
+Example output:
+```
+======================================================================
+ MCP FEDERATION CORE INSTALLER v2.0.0
+======================================================================
+ Installing to: C:\Users\YourName\mcp-servers
+ Python: 3.11.5
+ Platform: Windows 10
+======================================================================
+
+🔍 Checking prerequisites...
+  ✅ python: Python 3.11.5
+  ✅ node: v20.10.0
+  ✅ npm: 10.2.5
+  ✅ git: git version 2.42.0
+
+[1/15] Installing sequential-thinking
+  📦 Type: NPM Package
+  📦 Package: mcp-sequential-thinking
+  → Installing from npm registry...
+  ✅ Successfully installed in 3.2s
+
+[2/15] Installing expert-role-prompt
+  🔗 Type: GitHub Repository
+  🔗 Source: https://github.com/justmy2satoshis/expert-role-prompt-mcp.git
+  → Cloning repository...
+  ✅ Repository cloned successfully
+```
+
+### ⚠️ Troubleshooting
+
+**If the installer runs silently (no output):**
+- Make sure you're using the correct Python command (`python` vs `python3`)
+- Try running with unbuffered output: `python -u FEDERATED-INSTALLER-UNIFIED.py`
+- Use the verbose version: `FEDERATED-INSTALLER-UNIFIED-VERBOSE.py`
+
+**If you see "Not in mcp-federation-core directory":**
+- Make sure you're in the cloned repository directory
+- Check with `dir` (Windows) or `ls` (macOS/Linux)
+- The installer file should be visible in the current directory
+
+### 📦 Available Installers
+
+| Installer | Description | When to Use |
+|-----------|-------------|-------------|
+| **FEDERATED-INSTALLER-UNIFIED-VERBOSE.py** | Enhanced with verbose output and progress tracking | **Recommended** - Use this for best experience |
+| **FEDERATED-INSTALLER-UNIFIED.py** | Original unified installer | If you prefer minimal output |
+| **install.ps1** | Windows PowerShell installer | Windows-specific alternative |
 
 ### 🛡️ What the Installer Does (SAFELY)
 
