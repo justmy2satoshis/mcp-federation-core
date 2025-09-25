@@ -1,5 +1,5 @@
-# MCP Federation Suite Installer v3.0
-# Complete installation of 15 MCPs for Claude Desktop
+# MCP Federation Core v2.0.0 - Production Suite Installer
+# Complete installation of 15 production-ready MCPs for Claude Desktop
 # GitHub: https://github.com/justmy2satoshis/mcp-federation-core
 
 param(
@@ -22,7 +22,7 @@ Write-Host @"
 ╚═╝     ╚═╝ ╚═════╝╚═╝         ╚═╝     ╚══════╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
 
                             15 MCPs | Ollama Priority | 80-95% Cost Savings
-                                    Version 3.0 - Production Ready
+                                   Version 2.0.0 - Production Suite
 "@ -ForegroundColor Cyan
 
 # Configuration
