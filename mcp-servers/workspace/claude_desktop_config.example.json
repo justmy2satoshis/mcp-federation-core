@@ -1,0 +1,95 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "C:\\Users\\[USERNAME]\\Documents"],
+      "env": {"NODE_NO_WARNINGS": "1"}
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "env": {"NODE_NO_WARNINGS": "1"}
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "env": {"NODE_NO_WARNINGS": "1"}
+    },
+    "desktop-commander": {
+      "command": "npx",
+      "args": ["-y", "@wonderwhy-er/desktop-commander@latest"],
+      "env": {"NODE_NO_WARNINGS": "1"}
+    },
+    "perplexity": {
+      "command": "npx",
+      "args": ["-y", "server-perplexity-ask"],
+      "env": {
+        "NODE_NO_WARNINGS": "1",
+        "PERPLEXITY_API_KEY": "YOUR_PERPLEXITY_API_KEY_HERE"
+      }
+    },
+    "converse": {
+      "command": "python",
+      "args": ["[INSTALL_PATH]\\mcp-servers\\converse-mcp-enhanced\\src\\server.py"],
+      "env": {
+        "OLLAMA_HOST": "http://localhost:11434",
+        "OPENAI_API_KEY": "YOUR_OPENAI_API_KEY_HERE",
+        "GOOGLE_API_KEY": "YOUR_GOOGLE_API_KEY_HERE",
+        "XAI_API_KEY": "YOUR_XAI_API_KEY_HERE",
+        "PERPLEXITY_API_KEY": "YOUR_PERPLEXITY_API_KEY_HERE",
+        "MODEL_PRIORITY": "ollama,xai,openai,google"
+      }
+    },
+    "rag-context": {
+      "command": "python",
+      "args": ["[INSTALL_PATH]\\mcp-servers\\rag-context-fixed\\server.py"],
+      "env": {
+        "RAG_DATA_DIR": "[INSTALL_PATH]\\ClaudeRAG\\data",
+        "RAG_LOG_DIR": "[INSTALL_PATH]\\ClaudeRAG\\logs"
+      }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--browser", "chromium"],
+      "env": {"NODE_NO_WARNINGS": "1"}
+    },
+    "sqlite": {
+      "command": "npx",
+      "args": ["-y", "mcp-sqlite", "[INSTALL_PATH]\\databases\\dev.db"],
+      "env": {"NODE_NO_WARNINGS": "1"}
+    },
+    "git-ops": {
+      "command": "npx",
+      "args": ["-y", "@cyanheads/git-mcp-server"],
+      "env": {"NODE_NO_WARNINGS": "1"}
+    },
+    "github-manager": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {"GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_TOKEN_HERE"}
+    },
+    "web-search": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "NODE_NO_WARNINGS": "1",
+        "BRAVE_API_KEY": "YOUR_BRAVE_API_KEY_HERE"
+      }
+    },
+    "expert-role-prompt": {
+      "command": "node",
+      "args": ["[INSTALL_PATH]\\mcp-servers\\expert-role-prompt\\server.js"],
+      "env": {"NODE_NO_WARNINGS": "1"}
+    },
+    "kimi-k2-code-context-enhanced": {
+      "command": "python",
+      "args": ["[INSTALL_PATH]\\mcp-servers\\kimi-k2-code-context-enhanced\\server.py"],
+      "env": {}
+    },
+    "kimi-k2-resilient-enhanced": {
+      "command": "python",
+      "args": ["[INSTALL_PATH]\\mcp-servers\\kimi-k2-resilient-enhanced\\server.py"],
+      "env": {}
+    }
+  }
+}
