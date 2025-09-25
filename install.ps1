@@ -130,6 +130,7 @@ $mcpDefinitions = @(
         url = "https://github.com/justmy2satoshis/converse-mcp-enhanced.git"
         type = "python"
         description = "Multi-model AI with Ollama priority (80-95% savings)"
+        customPath = "src\server.py"
         env = @{
             OLLAMA_HOST = "http://localhost:11434"
             OPENAI_API_KEY = ""
