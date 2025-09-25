@@ -241,24 +241,23 @@ class FederatedUnifiedInstaller:
                 }
             },
 
-            # GitHub MCPs
+            # Federation MCPs (bundled with installer)
             'expert-role-prompt': {
-                'type': 'github',
-                'source': 'https://github.com/justmy2satoshis/expert-role-prompt-mcp.git',
-                'directory': 'expert-role-prompt-mcp',
-                'branch': 'main',
+                'type': 'federation',
+                'source_directory': 'mcp-servers/expert-role-prompt',
+                'directory': 'expert-role-prompt',
                 'install': ['npm', 'install'],
                 'needs_db': False,
                 'config': {
                     'command': 'node',
-                    'args': [str(self.base_dir / 'expert-role-prompt-mcp' / 'server.js')]
+                    'args': [str(self.base_dir / 'expert-role-prompt' / 'server.js')],
+                    'env': {'NODE_NO_WARNINGS': '1'}
                 }
             },
             'converse-enhanced': {
-                'type': 'github',
-                'source': 'https://github.com/justmy2satoshis/converse-mcp-enhanced.git',
+                'type': 'federation',
+                'source_directory': 'mcp-servers/converse-mcp-enhanced',
                 'directory': 'converse-mcp-enhanced',
-                'branch': 'main',
                 'install': ['pip', 'install', 'httpx', 'python-dotenv'],
                 'needs_db': False,
                 'config': {
@@ -270,6 +269,8 @@ class FederatedUnifiedInstaller:
                     }
                 }
             },
+
+            # GitHub MCPs
             'kimi-k2-code-context': {
                 'type': 'github',
                 'source': 'https://github.com/justmy2satoshis/kimi-k2-code-context-mcp-repo.git',
@@ -381,6 +382,62 @@ class FederatedUnifiedInstaller:
 
         except Exception as e:
             print(f"  ❌ Exception during installation: {e}")
+            return False
+
+    def install_federation_mcp(self, name, mcp_info):
+        """Copy federation MCP from bundled sources with verbose output"""
+        self.current_mcp += 1
+        print(f"\n[{self.current_mcp}/{self.total_mcps}] Installing {name}")
+        print(f"  📦 Type: Federation (Bundled)")
+        print(f"  📦 Source: mcp-federation-core/{mcp_info['source_directory']}")
+
+        # Get paths
+        script_dir = Path(__file__).parent
+        source_dir = script_dir / mcp_info['source_directory']
+        target_dir = self.base_dir / mcp_info['directory']
+
+        try:
+            # Check if source exists
+            if not source_dir.exists():
+                print(f"  ❌ Source directory not found: {source_dir}")
+                return False
+
+            # Copy federation MCP
+            if target_dir.exists():
+                print(f"  → Removing existing installation...")
+                shutil.rmtree(target_dir)
+
+            print(f"  → Copying federation files...")
+            print(f"  → From: {source_dir.name}")
+            print(f"  → To: {target_dir.name}")
+
+            shutil.copytree(source_dir, target_dir)
+            print(f"  ✅ Federation MCP copied successfully")
+
+            # Install dependencies if needed
+            if mcp_info['install']:
+                if mcp_info['install'][0] == 'npm':
+                    print(f"  → Installing npm dependencies...")
+                    result = subprocess.run(['npm', 'install'], cwd=str(target_dir), capture_output=True, text=True)
+                    if result.returncode == 0:
+                        print(f"  ✅ npm dependencies installed")
+                    else:
+                        print(f"  ⚠️ npm install had warnings (usually OK)")
+
+                elif mcp_info['install'][0] == 'pip':
+                    print(f"  → Installing Python dependencies...")
+                    pip_cmd = ['pip', 'install'] if self.is_windows else ['pip3', 'install']
+                    pip_cmd.extend(mcp_info['install'][1:])  # Add the packages
+                    result = subprocess.run(pip_cmd, capture_output=True, text=True)
+                    if result.returncode == 0:
+                        print(f"  ✅ Python dependencies installed")
+                    else:
+                        print(f"  ⚠️ pip install had warnings: {result.stderr[:100]}")
+
+            return True
+
+        except Exception as e:
+            print(f"  ❌ Exception during federation installation: {e}")
             return False
 
     def install_github_mcp(self, name, mcp_info):
@@ -548,6 +605,8 @@ class FederatedUnifiedInstaller:
                 success = self.install_npm_mcp(name, info)
             elif info['type'] == 'github':
                 success = self.install_github_mcp(name, info)
+            elif info['type'] == 'federation':
+                success = self.install_federation_mcp(name, info)
 
             if success:
                 self.installed_mcps.append(name)
