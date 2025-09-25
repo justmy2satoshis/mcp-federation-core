@@ -5,20 +5,6 @@ All notable changes to the MCP Federation Core project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.5] - 2025-01-24
-
-### SURGICAL FIX
-- **FIXED**: converse-enhanced now correctly configured as Python MCP instead of Node.js
-- Changed from `npx -y converse-mcp-server` to `python server.py`
-- Now clones from GitHub and runs Python server directly
-- All 15 MCPs now show green checkmarks (100% functional)
-
-### Technical Details
-- converse-enhanced configuration changed from npm type to github type
-- Install command changed from `npm install` to `pip install -r requirements.txt`
-- Command path now points to `converse-mcp-enhanced/src/server.py`
-- No other MCPs modified - surgical fix only
-
 ## [0.1.4] - 2025-01-24
 
 ### CRITICAL FIXES
