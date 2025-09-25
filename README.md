@@ -1,10 +1,10 @@
-# MCP Federation Core 🚀
+# MCP Federation Core v2.0 - Production Suite 🚀
 
 [![MCPs](https://img.shields.io/badge/MCPs-15-blue)](https://modelcontextprotocol.io/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Cost Savings](https://img.shields.io/badge/Savings-80--95%25-purple)](https://ollama.ai/)
 [![Claude Desktop](https://img.shields.io/badge/Claude-Desktop-orange)](https://claude.ai)
-[![Version](https://img.shields.io/badge/Version-3.0-red)](https://github.com/justmy2satoshis/mcp-federation-core)
+[![Version](https://img.shields.io/badge/Version-2.0.0-red)](https://github.com/justmy2satoshis/mcp-federation-core)
 
 ## 🎯 What is MCP Federation Core?
 
@@ -212,15 +212,23 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🚀 Roadmap
 
-### Current Version (2.0.0 - Basic):
+### Current Version (2.0.0 - Production Suite):
 - ✅ 15 MCPs with unified database
 - ✅ Cross-MCP communication
-- ✅ Expert role system
+- ✅ Expert role system with 50 specialized roles
 - ✅ REST API integration
+- ✅ Ollama auto-detection and local model priority
+- ✅ Advanced reasoning frameworks (CoT, ToT)
+- ✅ Production-ready installer and uninstaller
 
-### Coming Soon (3.0.0 - Pro):
+### Coming Soon (2.1.0):
+- 🔄 RAG-Anything integration with proper Python SDK
+- 🔄 Additional vector search capabilities
+- 🔄 Enhanced web dashboard
+- 🔄 Performance monitoring tools
+
+### Future (3.0.0 - Enterprise):
 - 🔄 30+ MCPs including advanced AI/ML
-- 🔄 Web dashboard for monitoring
 - 🔄 Enterprise authentication (OAuth, SAML)
 - 🔄 Cloud synchronization
 - 🔄 Advanced workflow automation
