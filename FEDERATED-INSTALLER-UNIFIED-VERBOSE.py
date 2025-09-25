@@ -262,7 +262,7 @@ class FederatedUnifiedInstaller:
                 'needs_db': False,
                 'config': {
                     'command': 'python' if self.is_windows else 'python3',
-                    'args': [str(self.base_dir / 'converse-mcp-enhanced' / 'src' / 'server.py')],
+                    'args': [str(self.base_dir / 'converse-mcp-enhanced' / 'src' / 'mcp_server.py')],
                     'env': {
                         'OPENAI_API_KEY': 'YOUR_OPENAI_KEY',
                         'GEMINI_API_KEY': 'YOUR_GEMINI_KEY'
