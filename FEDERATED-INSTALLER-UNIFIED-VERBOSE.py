@@ -145,57 +145,63 @@ class FederatedUnifiedInstaller:
         return {
             # NPM Registry MCPs
             'sequential-thinking': {
-                'type': 'npm',
-                'source': 'mcp-sequential-thinking',
-                'install': ['npm', 'install', '-g', 'mcp-sequential-thinking'],
+                'type': 'npx',
+                'source': '@modelcontextprotocol/server-sequential-thinking',
+                'install': [],  # NPX packages don't need pre-installation
                 'needs_db': False,
                 'config': {
-                    'command': 'mcp-sequential-thinking'
+                    'command': 'npx',
+                    'args': ['-y', '@modelcontextprotocol/server-sequential-thinking'],
+                    'env': {'NODE_NO_WARNINGS': '1'}
                 }
             },
             'filesystem': {
                 'type': 'npm',
-                'source': '@modelcontextprotocol/server-filesystem',
-                'install': ['npm', 'install', '-g', '@modelcontextprotocol/server-filesystem'],
+                'source': 'mcp-server-filesystem',
+                'install': ['npm', 'install', '-g', 'mcp-server-filesystem'],
                 'needs_db': False,
                 'config': {
                     'command': 'mcp-server-filesystem',
                     'args': [str(self.home)]
                 }
             },
-            'github': {
-                'type': 'npm',
+            'github-manager': {
+                'type': 'npx',
                 'source': '@modelcontextprotocol/server-github',
-                'install': ['npm', 'install', '-g', '@modelcontextprotocol/server-github'],
+                'install': [],  # NPX packages don't need pre-installation
                 'needs_db': False,
                 'config': {
-                    'command': 'mcp-server-github',
-                    'env': {'GITHUB_TOKEN': 'YOUR_GITHUB_TOKEN'}
+                    'command': 'npx',
+                    'args': ['-y', '@modelcontextprotocol/server-github'],
+                    'env': {'GITHUB_PERSONAL_ACCESS_TOKEN': 'YOUR_GITHUB_TOKEN'}
                 }
             },
             'sqlite': {
-                'type': 'npm',
-                'source': '@modelcontextprotocol/server-sqlite',
-                'install': ['npm', 'install', '-g', '@modelcontextprotocol/server-sqlite'],
+                'type': 'npx',
+                'source': 'mcp-sqlite',
+                'install': [],  # NPX packages don't need pre-installation
                 'needs_db': False,
                 'config': {
-                    'command': 'mcp-server-sqlite',
-                    'args': [str(self.db_path)]
+                    'command': 'npx',
+                    'args': ['-y', 'mcp-sqlite', str(self.base_dir / 'databases' / 'dev.db')],
+                    'env': {'NODE_NO_WARNINGS': '1'}
                 }
             },
             'playwright': {
-                'type': 'npm',
-                'source': '@modelcontextprotocol/server-playwright',
-                'install': ['npm', 'install', '-g', '@modelcontextprotocol/server-playwright'],
+                'type': 'npx',
+                'source': '@playwright/mcp@0.0.37',
+                'install': [],  # NPX packages don't need pre-installation
                 'needs_db': False,
                 'config': {
-                    'command': 'mcp-server-playwright'
+                    'command': 'npx',
+                    'args': ['-y', '@playwright/mcp@0.0.37', '--browser', 'chromium'],
+                    'env': {'NODE_NO_WARNINGS': '1'}
                 }
             },
             'memory': {
                 'type': 'npm',
-                'source': '@modelcontextprotocol/server-memory',
-                'install': ['npm', 'install', '-g', '@modelcontextprotocol/server-memory'],
+                'source': 'mcp-server-memory',
+                'install': ['npm', 'install', '-g', 'mcp-server-memory'],
                 'needs_db': True,
                 'config': {
                     'command': 'mcp-server-memory'
@@ -203,8 +209,8 @@ class FederatedUnifiedInstaller:
             },
             'web-search': {
                 'type': 'npm',
-                'source': '@modelcontextprotocol/server-brave-search',
-                'install': ['npm', 'install', '-g', '@modelcontextprotocol/server-brave-search'],
+                'source': 'mcp-server-brave-search',
+                'install': ['npm', 'install', '-g', 'mcp-server-brave-search'],
                 'needs_db': False,
                 'config': {
                     'command': 'mcp-server-brave-search',
@@ -212,27 +218,34 @@ class FederatedUnifiedInstaller:
                 }
             },
             'git-ops': {
-                'type': 'npm',
-                'source': '@modelcontextprotocol/server-git',
-                'install': ['npm', 'install', '-g', '@modelcontextprotocol/server-git'],
+                'type': 'npx',
+                'source': '@cyanheads/git-mcp-server',
+                'install': [],  # NPX packages don't need pre-installation
                 'needs_db': False,
                 'config': {
-                    'command': 'mcp-server-git'
+                    'command': 'npx',
+                    'args': ['-y', '@cyanheads/git-mcp-server'],
+                    'env': {
+                        'NODE_NO_WARNINGS': '1',
+                        'GIT_REPO_PATH': str(self.home / 'mcp-project')
+                    }
                 }
             },
             'desktop-commander': {
-                'type': 'npm',
-                'source': 'mcp-server-desktop-commander',
-                'install': ['npm', 'install', '-g', 'mcp-server-desktop-commander'],
+                'type': 'npx',
+                'source': '@wonderwhy-er/desktop-commander@latest',
+                'install': [],  # NPX packages don't need pre-installation
                 'needs_db': False,
                 'config': {
-                    'command': 'mcp-server-desktop-commander'
+                    'command': 'npx',
+                    'args': ['-y', '@wonderwhy-er/desktop-commander@latest'],
+                    'env': {'NODE_NO_WARNINGS': '1'}
                 }
             },
             'perplexity': {
-                'type': 'npm',
-                'source': 'mcp-server-perplexity',
-                'install': ['npm', 'install', '-g', 'mcp-server-perplexity'],
+                'type': 'npx',
+                'source': 'server-perplexity-ask',
+                'install': [],  # NPX packages don't need pre-installation
                 'needs_db': False,
                 'config': {
                     'command': 'npx',
@@ -270,12 +283,11 @@ class FederatedUnifiedInstaller:
                 }
             },
 
-            # GitHub MCPs
+            # Bundled Federation MCPs
             'kimi-k2-code-context': {
-                'type': 'github',
-                'source': 'https://github.com/justmy2satoshis/kimi-k2-code-context-mcp-repo.git',
+                'type': 'federation',
+                'source_directory': 'mcp-servers/kimi-k2-code-context-enhanced',
                 'directory': 'kimi-k2-code-context-enhanced',
-                'branch': 'main',
                 'install': [],
                 'needs_db': True,
                 'config': {
@@ -284,10 +296,9 @@ class FederatedUnifiedInstaller:
                 }
             },
             'kimi-k2-resilient': {
-                'type': 'github',
-                'source': 'https://github.com/justmy2satoshis/kimi-k2-heavy-processor-mcp-repo.git',
+                'type': 'federation',
+                'source_directory': 'mcp-servers/kimi-k2-resilient-enhanced',
                 'directory': 'kimi-k2-resilient-enhanced',
-                'branch': 'main',
                 'install': [],
                 'needs_db': True,
                 'config': {
@@ -296,10 +307,9 @@ class FederatedUnifiedInstaller:
                 }
             },
             'rag-context': {
-                'type': 'github',
-                'source': 'https://github.com/justmy2satoshis/rag-context-fixed.git',
+                'type': 'federation',
+                'source_directory': 'mcp-servers/rag-context-fixed',
                 'directory': 'rag-context-fixed',
-                'branch': 'main',
                 'install': [],
                 'needs_db': False,
                 'config': {
@@ -603,6 +613,14 @@ class FederatedUnifiedInstaller:
 
             if info['type'] == 'npm':
                 success = self.install_npm_mcp(name, info)
+            elif info['type'] == 'npx':
+                # NPX packages don't need installation, just configuration
+                self.current_mcp += 1
+                print(f"\n[{self.current_mcp}/{self.total_mcps}] Configuring {name}")
+                print(f"  📦 Type: NPX Package (downloaded on first use)")
+                print(f"  📦 Package: {info['source']}")
+                print(f"  ✅ Will be available via npx")
+                success = True
             elif info['type'] == 'github':
                 success = self.install_github_mcp(name, info)
             elif info['type'] == 'federation':
