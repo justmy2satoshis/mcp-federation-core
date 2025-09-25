@@ -319,7 +319,7 @@ export MCP_UNIFIED="true"
                 'needs_db': False,
                 'config': {
                     'command': 'node',
-                    'args': [str(self.base_dir / 'expert-role-prompt-mcp' / 'src' / 'server.js')]
+                    'args': [str(self.base_dir / 'expert-role-prompt-mcp' / 'server.js')]
                 }
             },
             'converse-enhanced': {
