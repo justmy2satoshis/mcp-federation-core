@@ -241,7 +241,7 @@ class MCPVerifier:
         print("   npm install -g @modelcontextprotocol/server-filesystem")
         print("   npm install -g @modelcontextprotocol/server-sqlite")
         print("   npm install -g server-perplexity-ask")
-        print("   npm install -g converse-mcp-server")
+        print("   # converse-enhanced is a GitHub Python MCP, not npm")
 
         print("\n2. Python command issues (Windows):")
         print("   Change 'python3' to 'python' in configuration")
